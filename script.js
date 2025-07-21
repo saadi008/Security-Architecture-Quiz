@@ -1,1824 +1,3909 @@
-// Quiz Application State
-class QuizApp {
+// Quiz Application
+class EntrepreneurshipQuiz {
     constructor() {
-        this.currentScreen = 'welcome';
-        this.selectedCaseStudies = [];
+        this.questions = [];
         this.currentQuestionIndex = 0;
-        this.answers = [];
-        this.score = 0;
-        this.correctAnswers = 0;
-        this.totalQuestions = 0;
-        
-        // Case studies from the Excel file
-        this.caseStudies = [
-            { id: 1, title: "NIST Framework Adoption", description: "Understanding NIST Cybersecurity Framework implementation" },
-            { id: 2, title: "SolarWinds Supply Chain Attack (2020)", description: "Analysis of supply chain security vulnerabilities" },
-            { id: 3, title: "Heartbleed Vulnerability (2014)", description: "OpenSSL vulnerability and its impact" },
-            { id: 4, title: "Target Data Breach (2013)", description: "Point-of-sale system security breach" },
-            { id: 5, title: "WannaCry Ransomware (2017)", description: "Global ransomware attack analysis" },
-            { id: 6, title: "Twitter Hack (2020)", description: "Social engineering and account compromise" },
-            { id: 7, title: "Capital One Data Breach (2019)", description: "Cloud misconfiguration and data exposure" },
-            { id: 8, title: "Mirai Botnet Attack (2016)", description: "IoT device security and botnet attacks" },
-            { id: 9, title: "Google's BeyondCorp Initiative", description: "Zero-trust security architecture" },
-            { id: 10, title: "WhatsApp Vulnerability (2019)", description: "End-to-end encryption and messaging security" },
-            { id: 11, title: "Maersk NotPetya Attack (2017)", description: "Nation-state cyber warfare and business impact" },
-            { id: 12, title: "Facebook-Cambridge Analytica Scandal", description: "Data privacy and third-party access" },
-            { id: 13, title: "AI in Detecting Phishing Attacks", description: "Machine learning in cybersecurity" },
-            { id: 14, title: "Equifax Data Breach (2017)", description: "Massive data breach affecting millions of consumers" },
-            { id: 15, title: "SQL Injection on Sony Pictures (2011)", description: "Database security breach through SQL injection attack" }
-        ];
-        
-        // Sample questions for each case study (you can add more)
-        this.questions = {
-            1: [ // NIST Framework Adoption
-                {
-                    question: "What are the five core functions of the NIST Cybersecurity Framework?",
-                    options: [
-                        "Monitor, Analyze, Block, Encrypt, Report",
-                        "Identify, Protect, Detect, Respond, Recover",
-                        "Plan, Build, Deploy, Test, Secure",
-                        "Predict, Prevent, Detect, Investigate, Repair"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "The NIST Cybersecurity Framework was primarily designed for which sector?",
-                    options: [
-                        "Healthcare",
-                        "Education",
-                        "Critical Infrastructure",
-                        "E-commerce"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "What is the purpose of a 'Profile' in the NIST CSF?",
-                    options: [
-                        "To define user credentials",
-                        "To map current and target cybersecurity postures",
-                        "To identify malware infections",
-                        "To implement encryption strategies"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What does Tier 4 (Adaptive) represent in the NIST CSF tiers?",
-                    options: [
-                        "The organization is unaware of risks",
-                        "The organization proactively adapts to changing threats",
-                        "The organization has no formal security policy",
-                        "The organization depends solely on third parties"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Which of the following is NOT a core NIST CSF function?",
-                    options: [
-                        "Identify",
-                        "Respond",
-                        "Encrypt",
-                        "Protect"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "What kind of approach does NIST CSF encourage organizations to adopt?",
-                    options: [
-                        "Static and technology-specific",
-                        "Risk-based and adaptive",
-                        "Compliance-only driven",
-                        "Audit-only focused"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Which function of the NIST CSF includes asset management and risk assessment?",
-                    options: [
-                        "Protect",
-                        "Detect",
-                        "Identify",
-                        "Recover"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "A bank adopts NIST CSF to improve its incident response plan. Which function does this relate to?",
-                    options: [
-                        "Identify",
-                        "Respond",
-                        "Protect",
-                        "Recover"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What is the benefit of NIST CSF adoption for an organization's security architecture?",
-                    options: [
-                        "It enforces government compliance.",
-                        "It aligns cybersecurity with business objectives.",
-                        "It eliminates the need for firewalls.",
-                        "It replaces all existing frameworks."
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "In a mature organization at Tier 3, which behavior is expected?",
-                    options: [
-                        "No formal cybersecurity practices",
-                        "Ad hoc incident responses",
-                        "Cybersecurity practices are repeatable and documented",
-                        "Cybersecurity is ignored unless audited"
-                    ],
-                    correct: 2
-                }
-            ],
-            2: [ // SolarWinds Supply Chain Attack
-                {
-                    question: "What was the name of the trojanized update in the SolarWinds attack?",
-                    options: [
-                        "FLAME",
-                        "SHADOWHAMMER",
-                        "SUNBURST",
-                        "GHOSTNET"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "What type of cyberattack was the SolarWinds incident classified as?",
-                    options: [
-                        "Phishing attack",
-                        "Supply chain attack",
-                        "DDoS attack",
-                        "Ransomware attack"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "How did the attackers distribute the SUNBURST malware to victims?",
-                    options: [
-                        "Malicious email attachments",
-                        "Through legitimate SolarWinds software updates",
-                        "USB devices",
-                        "Social engineering"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Which security architecture principle was most violated in the SolarWinds attack?",
-                    options: [
-                        "Data redundancy",
-                        "Implicit trust of software supply chain",
-                        "Encryption of stored data",
-                        "Multi-cloud resiliency"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What could have helped mitigate the damage caused by the SolarWinds attack?",
-                    options: [
-                        "Antivirus software",
-                        "Longer passwords",
-                        "Zero Trust Architecture and network segmentation",
-                        "More user training"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "Which federal entities were affected by the SolarWinds breach?",
-                    options: [
-                        "None",
-                        "Multiple U.S. government agencies",
-                        "Only financial institutions",
-                        "Only health sector"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What is a Software Bill of Materials (SBOM)?",
-                    options: [
-                        "Invoice from a software company",
-                        "A list of all components in a software product",
-                        "License key repository",
-                        "Cloud usage bill"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Why was SUNBURST hard to detect?",
-                    options: [
-                        "It deleted logs",
-                        "It used legitimate processes and was digitally signed",
-                        "It had a very large file size",
-                        "It was encrypted with ransomware"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Which of the following tools would best detect behavior like SUNBURST's?",
-                    options: [
-                        "Firewall",
-                        "IDS",
-                        "Endpoint Detection and Response (EDR)",
-                        "VPN"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "What was the biggest long-term lesson learned from SolarWinds?",
-                    options: [
-                        "Emails need stronger filters",
-                        "Data should only be stored on the cloud",
-                        "Organizations must secure and validate their entire software supply chain",
-                        "Remote work is unsafe"
-                    ],
-                    correct: 2
-                }
-            ],
-            3: [ // Heartbleed Vulnerability
-                {
-                    question: "What was the name of the vulnerability that allowed attackers to read server memory in 2014?",
-                    options: [
-                        "Shellshock",
-                        "Heartbleed",
-                        "Log4Shell",
-                        "BlueKeep"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What software was affected by the Heartbleed bug?",
-                    options: [
-                        "Apache Tomcat",
-                        "OpenSSL",
-                        "Microsoft IIS",
-                        "NGINX"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What caused the Heartbleed vulnerability?",
-                    options: [
-                        "SQL injection",
-                        "Outdated antivirus software",
-                        "Missing bounds check in heartbeat function of OpenSSL",
-                        "Weak encryption algorithm"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "What could an attacker potentially steal using Heartbleed?",
-                    options: [
-                        "IP addresses",
-                        "Private keys, passwords, and sensitive data from memory",
-                        "Browser cookies only",
-                        "File system access"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What is the CVE identifier associated with Heartbleed?",
-                    options: [
-                        "CVE-2015-1180",
-                        "CVE-2014-1122",
-                        "CVE-2014-0160",
-                        "CVE-2013-2001"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "How much data could be leaked per Heartbleed request?",
-                    options: [
-                        "1 MB",
-                        "64 KB",
-                        "256 KB",
-                        "Unlimited"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Which of the following would best help detect Heartbleed exploitation?",
-                    options: [
-                        "Antivirus",
-                        "Intrusion Detection System (IDS) analyzing TLS traffic",
-                        "Disk encryption",
-                        "CAPTCHA implementation"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What lesson does Heartbleed emphasize about open-source components?",
-                    options: [
-                        "Open-source is always secure",
-                        "Open-source software must be reviewed and monitored",
-                        "It's better to use proprietary software",
-                        "Never use C or C++ for libraries"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What is the main architectural flaw exposed by Heartbleed?",
-                    options: [
-                        "Lack of firewall configuration",
-                        "Misconfigured DNS",
-                        "Insecure memory handling in cryptographic software",
-                        "Improper port blocking"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "Which cybersecurity principle could have reduced the impact of Heartbleed?",
-                    options: [
-                        "Data deduplication",
-                        "Defense-in-depth and secure coding practices",
-                        "Disk defragmentation",
-                        "User training alone"
-                    ],
-                    correct: 1
-                }
-            ],
-            4: [ // Target Data Breach
-                {
-                    question: "What was the initial attack vector in the Target data breach?",
-                    options: [
-                        "SQL Injection",
-                        "Insider threat",
-                        "Compromised credentials from a third-party vendor",
-                        "Misconfigured firewall"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "How did attackers gain access to Target's internal network?",
-                    options: [
-                        "Zero-day exploit",
-                        "Through stolen credentials from an HVAC vendor",
-                        "Via social media phishing",
-                        "USB malware drop"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What critical security control was missing, allowing attackers to reach PoS systems?",
-                    options: [
-                        "Antivirus software",
-                        "Network segmentation",
-                        "Multi-cloud monitoring",
-                        "Disk encryption"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What kind of malware was used to collect payment card information at Target?",
-                    options: [
-                        "Keylogger",
-                        "RAM scraping malware",
-                        "Ransomware",
-                        "Spyware"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "How many customer records were affected in total (approximate)?",
-                    options: [
-                        "10 million",
-                        "110 million",
-                        "200 million",
-                        "500,000"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Which major architectural flaw allowed movement from vendor systems to PoS?",
-                    options: [
-                        "Lack of a data center",
-                        "Public Wi-Fi exposure",
-                        "Flat network with poor segmentation",
-                        "Misuse of cloud services"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "What is a key principle that could've limited the HVAC vendor's access?",
-                    options: [
-                        "Defense-by-default",
-                        "Full access for testing",
-                        "Least privilege",
-                        "Denial of service"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "Which tool reportedly generated alerts that were ignored during the attack?",
-                    options: [
-                        "Nmap",
-                        "FireEye",
-                        "Wireshark",
-                        "Metasploit"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What lesson about third-party risk is highlighted in this breach?",
-                    options: [
-                        "Vendors should be blocked from all access",
-                        "Third-party access should be limited and monitored",
-                        "Vendors are always secure",
-                        "Third-party risk doesn't affect architecture"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What type of system was the primary target of the malware in this breach?",
-                    options: [
-                        "Email server",
-                        "Database server",
-                        "Point-of-Sale (PoS) systems",
-                        "HR portal"
-                    ],
-                    correct: 2
-                }
-            ],
-            5: [ // WannaCry Ransomware
-                {
-                    question: "What vulnerability did WannaCry exploit to spread?",
-                    options: [
-                        "Heartbleed",
-                        "EternalBlue (SMBv1 vulnerability)",
-                        "BlueKeep",
-                        "Shellshock"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What protocol was primarily exploited in WannaCry attacks?",
-                    options: [
-                        "FTP",
-                        "HTTP",
-                        "SMBv1",
-                        "SNMP"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "What is the CVE associated with WannaCry's main exploit?",
-                    options: [
-                        "CVE-2015-2545",
-                        "CVE-2017-5638",
-                        "CVE-2017-0144",
-                        "CVE-2019-0708"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "What behavior made WannaCry especially dangerous?",
-                    options: [
-                        "It targeted only Linux servers",
-                        "It could spread automatically across networks (worm)",
-                        "It bypassed antivirus",
-                        "It was impossible to decrypt files"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What could have prevented most infections?",
-                    options: [
-                        "Using a VPN",
-                        "Installing more RAM",
-                        "Applying Microsoft's security patch MS17-010",
-                        "Disabling firewalls"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "Which high-profile sector was severely impacted in the UK?",
-                    options: [
-                        "Banking",
-                        "Healthcare (NHS)",
-                        "Education",
-                        "Agriculture"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What key architectural control was lacking in many victim organizations?",
-                    options: [
-                        "Antivirus",
-                        "Network segmentation and patch management",
-                        "Data deduplication",
-                        "Smart cards"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "How did WannaCry demand ransom payment?",
-                    options: [
-                        "Credit card",
-                        "Bitcoin",
-                        "Western Union",
-                        "Ethereum"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What is the recommended action regarding SMBv1 today?",
-                    options: [
-                        "Keep enabled for legacy apps",
-                        "Disable immediately; it's outdated and insecure",
-                        "Replace with FTP",
-                        "Move to IPv6"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What core lesson does WannaCry teach us?",
-                    options: [
-                        "Avoid installing apps from unknown sources",
-                        "Timely patching and legacy protocol hardening are critical",
-                        "Increase internet speed",
-                        "Run antivirus scans weekly"
-                    ],
-                    correct: 1
-                }
-            ],
-            6: [ // Twitter Hack
-                {
-                    question: "What was the primary method attackers used in the 2020 Twitter breach?",
-                    options: [
-                        "SQL injection",
-                        "Social engineering via phishing",
-                        "Zero-day malware",
-                        "Public Wi-Fi sniffing"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What was the attackers' main goal in the Twitter hack?",
-                    options: [
-                        "Delete user accounts",
-                        "Promote a Bitcoin scam",
-                        "Install ransomware",
-                        "Deface the website"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Approximately how many high-profile Twitter accounts were compromised?",
-                    options: [
-                        "50",
-                        "75",
-                        "130",
-                        "300"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "What was the root cause of the Twitter breach?",
-                    options: [
-                        "A vulnerability in the mobile app",
-                        "Abuse of internal administrative tools through employee compromise",
-                        "An AWS misconfiguration",
-                        "DNS hijacking"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Which key cybersecurity model was NOT properly implemented at Twitter?",
-                    options: [
-                        "Cloud-native model",
-                        "Zero Trust model",
-                        "DevOps model",
-                        "Encryption-in-transit"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What control could have prevented access to admin tools after initial compromise?",
-                    options: [
-                        "Antivirus software",
-                        "Multi-factor authentication (MFA)",
-                        "CAPTCHA",
-                        "HTTPS"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What type of phishing was used in this attack?",
-                    options: [
-                        "Email phishing",
-                        "Link farming",
-                        "Spear phishing via phone (vishing)",
-                        "Baiting with USBs"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "Which principle was violated by allowing too many employees admin access?",
-                    options: [
-                        "Logging and monitoring",
-                        "Least privilege",
-                        "Availability",
-                        "Network address translation"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What action did Twitter take during the attack to mitigate damage?",
-                    options: [
-                        "Disabled all accounts",
-                        "Temporarily disabled tweets from verified accounts",
-                        "Turned off mobile access",
-                        "Deleted user DMs"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What is the biggest long-term security takeaway from the Twitter 2020 breach?",
-                    options: [
-                        "Don't use Bitcoin",
-                        "Even internal systems must follow strong authentication and monitoring",
-                        "APIs are always insecure",
-                        "Cloud providers are to blame"
-                    ],
-                    correct: 1
-                }
-            ],
-            7: [ // Capital One Data Breach
-                {
-                    question: "What type of vulnerability was exploited in the Capital One breach?",
-                    options: [
-                        "SQL Injection",
-                        "Server-Side Request Forgery (SSRF)",
-                        "Buffer Overflow",
-                        "DNS Spoofing"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What cloud service provider was involved in the breach?",
-                    options: [
-                        "Microsoft Azure",
-                        "Amazon Web Services (AWS)",
-                        "Google Cloud",
-                        "IBM Cloud"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What was the attacker's profession before the breach?",
-                    options: [
-                        "Former Capital One employee",
-                        "Former AWS employee",
-                        "Freelance hacker",
-                        "University student"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Which AWS component was misused to gain access to S3 buckets?",
-                    options: [
-                        "IAM user",
-                        "EC2 instance metadata service",
-                        "AWS Lambda",
-                        "RDS endpoint"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "How was the breach initially discovered?",
-                    options: [
-                        "By Capital One's SOC team",
-                        "By an external GitHub user",
-                        "Through an antivirus alert",
-                        "By AWS"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What security principle could have prevented wide access to S3 data?",
-                    options: [
-                        "Defense by obscurity",
-                        "Principle of least privilege (PoLP)",
-                        "Rate limiting",
-                        "Access through CDN"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What can block SSRF attacks in AWS environments?",
-                    options: [
-                        "Increasing disk quota",
-                        "Using EC2 IMDSv2 and WAF",
-                        "Deleting CloudWatch logs",
-                        "Changing bucket region"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What kind of data was leaked in the breach?",
-                    options: [
-                        "Only public financial records",
-                        "SSNs, credit scores, account info, names, etc.",
-                        "Encrypted videos",
-                        "VPN logs"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What service can detect abnormal access patterns in AWS?",
-                    options: [
-                        "S3 Lifecycle",
-                        "EC2 Snapshot",
-                        "GuardDuty",
-                        "CloudFormation"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "What was one of the root causes of the Capital One breach?",
-                    options: [
-                        "Weak encryption algorithms",
-                        "Misconfigured IAM roles and firewall policies",
-                        "Lack of antivirus",
-                        "SQL Injection vulnerability"
-                    ],
-                    correct: 1
-                }
-            ],
-            8: [ // Mirai Botnet Attack
-                {
-                    question: "What type of cyberattack was launched using the Mirai botnet?",
-                    options: [
-                        "Ransomware",
-                        "Distributed Denial of Service (DDoS)",
-                        "SQL Injection",
-                        "Cross-site scripting (XSS)"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Which type of devices did Mirai primarily target?",
-                    options: [
-                        "Desktop computers",
-                        "Internet of Things (IoT) devices",
-                        "Smartphones",
-                        "Cloud servers"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What was the key method used to compromise IoT devices in the Mirai attack?",
-                    options: [
-                        "Zero-day exploits",
-                        "Phishing emails",
-                        "Default and hardcoded credentials",
-                        "Fileless malware"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "What major DNS provider was attacked by the Mirai botnet in October 2016?",
-                    options: [
-                        "Cloudflare",
-                        "Dyn",
-                        "GoDaddy",
-                        "Akamai"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What was one major consequence of the Dyn DDoS attack?",
-                    options: [
-                        "Data was leaked publicly",
-                        "Major websites became inaccessible globally",
-                        "Financial fraud occurred",
-                        "Email servers were hijacked"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What security measure can reduce brute-force login attempts on devices?",
-                    options: [
-                        "Disk encryption",
-                        "Rate limiting and account lockout",
-                        "DNS tunneling",
-                        "Packet sniffing"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Why were IoT devices ideal targets for Mirai?",
-                    options: [
-                        "They used Linux",
-                        "They often had weak security and default credentials",
-                        "They had built-in DDoS tools",
-                        "They stored sensitive data"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What is a good architectural defense against botnets like Mirai?",
-                    options: [
-                        "Antivirus",
-                        "SMS-based 2FA",
-                        "Network segmentation and outbound traffic monitoring",
-                        "Disabling Wi-Fi"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "How much traffic (approx.) did Mirai generate in the Dyn DDoS attack?",
-                    options: [
-                        "100 Mbps",
-                        "10 Gbps",
-                        "100 Gbps",
-                        "Over 1 Tbps"
-                    ],
-                    correct: 3
-                },
-                {
-                    question: "Which principle was violated by shipping devices with unchanged login credentials?",
-                    options: [
-                        "Role-based access",
-                        "Security by default",
-                        "Encryption in transit",
-                        "Zero-day mitigation"
-                    ],
-                    correct: 1
-                }
-            ],
-            9: [ // Google's BeyondCorp Initiative
-                {
-                    question: "What security model does Google's BeyondCorp Initiative follow?",
-                    options: [
-                        "Perimeter-based model",
-                        "Zero Trust Architecture",
-                        "Hub-and-spoke model",
-                        "Cloud-native firewall"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Which attack prompted Google to begin the BeyondCorp project?",
-                    options: [
-                        "Mirai Botnet",
-                        "Operation Aurora",
-                        "Stuxnet",
-                        "NotPetya"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What is a key principle of Zero Trust?",
-                    options: [
-                        "Trust all internal users",
-                        "Never trust, always verify",
-                        "Trust VPN only",
-                        "Block internet access"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "In BeyondCorp, what replaces VPN-based access?",
-                    options: [
-                        "Email OTPs",
-                        "Secure access via identity-aware proxies and policies",
-                        "IP-based firewalls",
-                        "Cloud-based DNS"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What factors are used to grant access in BeyondCorp?",
-                    options: [
-                        "Internet speed",
-                        "Device health, user identity, context",
-                        "Username only",
-                        "Firewall location"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What architecture concept does BeyondCorp eliminate?",
-                    options: [
-                        "Redundant storage",
-                        "Implicit trust based on network location",
-                        "Log rotation",
-                        "TCP-based access"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What kind of proxy does BeyondCorp use for traffic routing?",
-                    options: [
-                        "Load balancer",
-                        "Access proxy",
-                        "Reverse DNS",
-                        "CDN"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "How does BeyondCorp evaluate risk?",
-                    options: [
-                        "Based on random sampling",
-                        "Based on real-time context like device posture and user behavior",
-                        "Only after login",
-                        "Based on password strength only"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What security feature is critical for enforcing BeyondCorp access?",
-                    options: [
-                        "VLAN tagging",
-                        "Multi-factor authentication (MFA)",
-                        "Port forwarding",
-                        "Email filtering"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What key lesson can enterprises learn from BeyondCorp?",
-                    options: [
-                        "Perimeter security is enough if patched",
-                        "Identity and device context must drive access decisions",
-                        "VPNs are always secure",
-                        "Blocking USBs fixes most risks"
-                    ],
-                    correct: 1
-                }
-            ],
-            10: [ // WhatsApp Vulnerability
-                {
-                    question: "What type of vulnerability was exploited in the 2019 WhatsApp attack?",
-                    options: [
-                        "SQL Injection",
-                        "Buffer Overflow in VoIP stack",
-                        "Cross-site scripting",
-                        "DNS Spoofing"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Which group is believed to have developed the exploit?",
-                    options: [
-                        "Anonymous",
-                        "LulzSec",
-                        "NSO Group (Pegasus spyware)",
-                        "APT29"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "What made the attack especially dangerous?",
-                    options: [
-                        "Required phishing email",
-                        "Required no user interaction — just a WhatsApp call",
-                        "Required user login credentials",
-                        "Relied on brute-force password attack"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What kind of spyware was delivered in the WhatsApp attack?",
-                    options: [
-                        "Ransomware",
-                        "Pegasus",
-                        "WannaCry",
-                        "Keylogger"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Which platforms were affected by the vulnerability?",
-                    options: [
-                        "Android only",
-                        "iOS only",
-                        "Both Android and iOS",
-                        "Windows Mobile"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "What mobile security principle was violated due to overprivileged apps?",
-                    options: [
-                        "Data retention",
-                        "Least privilege",
-                        "Rate limiting",
-                        "Single sign-on"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What kind of secure coding technique could have prevented this exploit?",
-                    options: [
-                        "Minification",
-                        "Memory-safe code and buffer validation",
-                        "App theming",
-                        "SSL pinning"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What is the role of ASLR in preventing such attacks?",
-                    options: [
-                        "Encrypts data at rest",
-                        "Randomizes memory layout to prevent buffer overflows",
-                        "Secures VPN connections",
-                        "Detects spyware signatures"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "How did WhatsApp respond after the exploit was discovered?",
-                    options: [
-                        "Shut down the app",
-                        "Released a security patch and informed affected users",
-                        "Changed logo",
-                        "Switched to desktop-only"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What is the broader lesson for communication apps from this case?",
-                    options: [
-                        "Move to voice-only calls",
-                        "Real-time apps must enforce secure memory and permission controls",
-                        "Avoid encrypted messaging",
-                        "Don't update apps frequently"
-                    ],
-                    correct: 1
-                }
-            ],
-            11: [ // Maersk NotPetya Attack
-                {
-                    question: "What type of malware was NotPetya originally classified as?",
-                    options: [
-                        "Adware",
-                        "Ransomware (but functioned as a wiper)",
-                        "Spyware",
-                        "Rootkit"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "How did NotPetya enter Maersk's network?",
-                    options: [
-                        "Phishing email",
-                        "Trojanized update of Ukrainian software (MeDoc)",
-                        "USB drop",
-                        "Unpatched router"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What made NotPetya especially destructive within networks like Maersk?",
-                    options: [
-                        "Used only DNS tunneling",
-                        "Worm-like propagation and inability to decrypt files",
-                        "Relied on air-gapped networks",
-                        "Attacked only Linux servers"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Which tools did NotPetya use for lateral movement?",
-                    options: [
-                        "Tor and SSH brute force",
-                        "EternalBlue exploit and Mimikatz",
-                        "Telnet scanning",
-                        "Web application injection"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What was the estimated financial damage to Maersk from this attack?",
-                    options: [
-                        "$10 million",
-                        "$50 million",
-                        "$200–300 million",
-                        "Unknown"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "What critical recovery action saved Maersk's Active Directory infrastructure?",
-                    options: [
-                        "Rebuilt from scratch using AI",
-                        "Used a domain controller backup found in Ghana",
-                        "Switched to AWS overnight",
-                        "Hired external ethical hackers"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Which of the following was a key architectural flaw at Maersk?",
-                    options: [
-                        "Too many passwords",
-                        "Flat internal network with no segmentation",
-                        "Use of Linux systems",
-                        "Misconfigured VPN tunnel"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Why is NotPetya considered a wiper rather than true ransomware?",
-                    options: [
-                        "It infected mobile apps",
-                        "It had no functional decryption mechanism",
-                        "It asked for payment in Ethereum",
-                        "It came from the App Store"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What is a key lesson for enterprise architecture from this case?",
-                    options: [
-                        "Avoid using Windows OS",
-                        "Network segmentation and verified backups are critical",
-                        "Block all outbound connections",
-                        "Use biometric login everywhere"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What strategic practice could have prevented the initial compromise?",
-                    options: [
-                        "Firewalls only",
-                        "Software supply chain validation and patch controls",
-                        "Captcha on all apps",
-                        "Longer Wi-Fi passwords"
-                    ],
-                    correct: 1
-                }
-            ],
-            12: [ // Facebook-Cambridge Analytica Scandal
-                {
-                    question: "What kind of violation was at the heart of the Facebook–Cambridge Analytica scandal?",
-                    options: [
-                        "Malware injection",
-                        "Data privacy and consent violation",
-                        "Phishing scam",
-                        "Insider threat"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Approximately how many user profiles were affected?",
-                    options: [
-                        "10 million",
-                        "25 million",
-                        "~87 million",
-                        "5 billion"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "How was the data collected from users?",
-                    options: [
-                        "Through email surveys",
-                        "Via a quiz app that accessed both user and friend data",
-                        "Hacked from Facebook's servers",
-                        "Scraped from public comments"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Which third-party company used the harvested data for political profiling?",
-                    options: [
-                        "Palantir",
-                        "Cambridge Analytica",
-                        "NSO Group",
-                        "Shadow Brokers"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What core principle of data protection was violated?",
-                    options: [
-                        "Two-factor authentication",
-                        "Informed user consent",
-                        "End-to-end encryption",
-                        "Availability"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What was Facebook's largest fine from the FTC related to this case?",
-                    options: [
-                        "$500,000",
-                        "$1 billion",
-                        "$5 billion",
-                        "No fine was issued"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "What did the quiz app 'This Is Your Digital Life' collect from users?",
-                    options: [
-                        "Just name and email",
-                        "Personal data + friend data via Facebook APIs",
-                        "Only profile pictures",
-                        "Browser history"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What kind of controls could have prevented the large-scale data misuse?",
-                    options: [
-                        "Better antivirus",
-                        "API rate limiting and third-party permission restrictions",
-                        "More CAPTCHA",
-                        "Logging out daily"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Which regulatory law was later strengthened due to such scandals?",
-                    options: [
-                        "HIPAA",
-                        "GDPR / CCPA",
-                        "PCI-DSS",
-                        "FERPA"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What architectural best practice was missing from Facebook's platform at the time?",
-                    options: [
-                        "HTTPS encryption",
-                        "Continuous monitoring and data use enforcement for third-party apps",
-                        "Offline backups",
-                        "Token-based Wi-Fi"
-                    ],
-                    correct: 1
-                }
-            ],
-            13: [ // AI in Detecting Phishing Attacks
-                {
-                    question: "Why is AI increasingly used to detect phishing attacks?",
-                    options: [
-                        "It is cheaper than antivirus",
-                        "It detects sophisticated, evolving phishing tactics better than rules-based systems",
-                        "It replaces passwords",
-                        "It blocks all spam"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What AI technique is used to analyze the wording and tone of phishing emails?",
-                    options: [
-                        "Image recognition",
-                        "Natural Language Processing (NLP)",
-                        "CAPTCHA",
-                        "IP spoofing"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Which of the following is a key indicator AI looks for in phishing URLs?",
-                    options: [
-                        "GIF animations",
-                        "Domain age and reputation",
-                        "JavaScript performance",
-                        "Screen brightness"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What advantage does AI provide in phishing detection?",
-                    options: [
-                        "Stops all malware",
-                        "Detects zero-day phishing attacks without needing signature updates",
-                        "Encrypts email automatically",
-                        "Blocks USB ports"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What is a major challenge in using AI for phishing detection?",
-                    options: [
-                        "Internet speed",
-                        "Antivirus compatibility",
-                        "Need for large, labeled datasets for training",
-                        "Lack of JavaScript"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "What security tool often integrates AI-based phishing detection?",
-                    options: [
-                        "Disk defragmenter",
-                        "Email security gateways or SOC tools",
-                        "Word processors",
-                        "USB scanners"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What technique helps detect phishing sites mimicking real websites visually?",
-                    options: [
-                        "VPN",
-                        "Computer Vision",
-                        "Keylogging",
-                        "Tokenization"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Which type of AI model requires labeled examples of phishing and non-phishing data?",
-                    options: [
-                        "Unsupervised learning",
-                        "Supervised learning",
-                        "Reinforcement learning only",
-                        "Genetic algorithms"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Which feature of AI systems can help reduce SOC analyst workload?",
-                    options: [
-                        "CAPTCHA solving",
-                        "Automated email classification and threat scoring",
-                        "Log file compression",
-                        "Keyboard locking"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What should organizations do to improve AI phishing detection over time?",
-                    options: [
-                        "Reduce internet bandwidth",
-                        "Retrain models using incident feedback (feedback loops)",
-                        "Avoid antivirus",
-                        "Block all marketing emails"
-                    ],
-                    correct: 1
-                }
-            ],
-            14: [ // Equifax Data Breach (2017)
-                {
-                    question: "What was the primary cause of the Equifax data breach in 2017?",
-                    options: [
-                        "Insider threat",
-                        "Weak password policies",
-                        "Unpatched Apache Struts vulnerability",
-                        "Phishing attack"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "Approximately how many individuals were affected by the Equifax breach?",
-                    options: [
-                        "50 million",
-                        "100 million",
-                        "147 million",
-                        "200 million"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "What critical security control was missing, which allowed attackers to move laterally within Equifax's network?",
-                    options: [
-                        "Two-factor authentication",
-                        "Network segmentation",
-                        "Web application firewall",
-                        "SIEM logging"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Which of the following data types was NOT stolen in the Equifax breach?",
-                    options: [
-                        "Social Security Numbers",
-                        "Medical Records",
-                        "Dates of Birth",
-                        "Credit Card Numbers"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What vulnerability identifier (CVE) was linked to the Equifax breach?",
-                    options: [
-                        "CVE-2016-0800",
-                        "CVE-2018-11776",
-                        "CVE-2017-5638",
-                        "CVE-2015-4852"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "Why did Equifax fail to apply the critical patch in time?",
-                    options: [
-                        "They were unaware of the vulnerability.",
-                        "Patch was not released yet.",
-                        "Poor asset inventory and tracking systems.",
-                        "They applied it, but it failed."
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "What security best practice could have prevented data exfiltration during the breach?",
-                    options: [
-                        "Role-based access control",
-                        "Encryption of data at rest",
-                        "VPN tunneling",
-                        "Multi-cloud deployment"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "How long did the attackers remain undetected in Equifax's network?",
-                    options: [
-                        "Less than a week",
-                        "Around 15 days",
-                        "76 days",
-                        "Over 1 year"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "What was one of the major architectural flaws in Equifax's security posture?",
-                    options: [
-                        "Excessive firewall rules",
-                        "Lack of Zero Trust model implementation",
-                        "Strong password policy",
-                        "Limited user access"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What security tool would have helped detect the breach earlier?",
-                    options: [
-                        "Antivirus software",
-                        "SIEM (Security Information and Event Management)",
-                        "Load balancer",
-                        "IP spoofing tool"
-                    ],
-                    correct: 1
-                }
-            ],
-            15: [ // SQL Injection on Sony Pictures (2011)
-                {
-                    question: "What type of cyberattack was used in the Sony Pictures breach of 2011?",
-                    options: [
-                        "Ransomware",
-                        "Phishing",
-                        "SQL Injection",
-                        "Buffer overflow"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "Which hacker group claimed responsibility for the Sony breach?",
-                    options: [
-                        "Anonymous",
-                        "LulzSec",
-                        "Shadow Brokers",
-                        "Fancy Bear"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What critical database security mistake did Sony make?",
-                    options: [
-                        "Disabled user accounts",
-                        "Used strong encryption",
-                        "Stored passwords in plaintext",
-                        "Disabled the firewall"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "What is the key vulnerability exploited in SQL injection attacks?",
-                    options: [
-                        "Weak password policy",
-                        "Lack of input validation/sanitization",
-                        "Use of cloud services",
-                        "Outdated hardware"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What does a Web Application Firewall (WAF) help prevent?",
-                    options: [
-                        "DDOS attacks only",
-                        "SQL injection and other application-layer attacks",
-                        "Disk failure",
-                        "Physical theft"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Which of the following is the best defense against SQL injection?",
-                    options: [
-                        "Encrypting the database",
-                        "Using parameterized queries (prepared statements)",
-                        "Using complex passwords",
-                        "Setting up a VPN"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "How many user records were reportedly compromised in the Sony SQLi breach?",
-                    options: [
-                        "10,000",
-                        "100,000",
-                        "Over 1 million",
-                        "Unknown"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "What security principle did Sony violate by allowing DB users full permissions?",
-                    options: [
-                        "Role-based access control",
-                        "Least privilege",
-                        "Defense in depth",
-                        "Fail-safe default"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What tool could have detected such SQL vulnerabilities before launch?",
-                    options: [
-                        "Wireshark",
-                        "OWASP ZAP or Burp Suite",
-                        "VPN",
-                        "Hypervisor"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "What major design flaw exposed Sony's backend database?",
-                    options: [
-                        "No HTTPS",
-                        "No proper segmentation between frontend and backend",
-                        "Use of IPv6",
-                        "Lack of antivirus"
-                    ],
-                    correct: 1
-                }
-            ]
+        this.answers = {};
+        this.bookmarkedQuestions = new Set();
+        this.startTime = null;
+        this.isDarkTheme = false;
+        this.selectedSection = 1; // Default to section 1
+        this.sectionRanges = {
+            1: { start: 1, end: 100 },
+            2: { start: 101, end: 200 },
+            3: { start: 201, end: 300 }
         };
-        
-        this.init();
+        this.timer = null;
+        this.timeLimit = 100 * 60; // 100 minutes in seconds
+        this.remainingTime = this.timeLimit;
+        this.initializeApp();
     }
-    
-    init() {
-        this.renderCaseStudies();
-        this.bindEvents();
-        this.updateStats();
-    }
-    
-    renderCaseStudies() {
-        const container = document.getElementById('case-studies-container');
-        container.innerHTML = '';
-        
-        this.caseStudies.forEach(study => {
-            const card = document.createElement('div');
-            card.className = 'case-study-card';
-            card.dataset.id = study.id;
-            
-            card.innerHTML = `
-                <h3>${study.title}</h3>
-                <p>${study.description}</p>
-            `;
-            
-            card.addEventListener('click', () => this.toggleCaseStudy(study.id));
-            container.appendChild(card);
-        });
-    }
-    
-    toggleCaseStudy(id) {
-        const card = document.querySelector(`[data-id="${id}"]`);
-        const index = this.selectedCaseStudies.indexOf(id);
-        
-        if (index > -1) {
-            this.selectedCaseStudies.splice(index, 1);
-            card.classList.remove('selected');
-        } else {
-            this.selectedCaseStudies.push(id);
-            card.classList.add('selected');
+
+    async initializeApp() {
+        try {
+            this.showLoadingScreen();
+            await this.loadQuestions();
+            this.initializeUI();
+            this.hideLoadingScreen();
+        } catch (error) {
+            console.error('Error initializing app:', error);
+            this.showError('Failed to load quiz data. Please refresh the page.');
         }
-        
-        this.updateStats();
     }
-    
-    updateStats() {
-        const progressElement = document.getElementById('progress');
-        const progress = this.selectedCaseStudies.length > 0 ? 
-            Math.round((this.selectedCaseStudies.length / this.caseStudies.length) * 100) : 0;
-        progressElement.textContent = `${progress}%`;
+
+    async loadQuestions() {
+        try {
+            const response = await fetch('./mcqs.json');
+            if (!response.ok) throw new Error('Failed to load questions');
+            this.allQuestions = await response.json();
+        } catch (error) {
+            this.allQuestions = this.getEmbeddedQuestions();
+        }
+        // Default to section 1
+        this.setSectionQuestions(1);
     }
-    
+
+    setSectionQuestions(section) {
+        this.selectedSection = section;
+        const { start, end } = this.sectionRanges[section];
+        this.questions = this.allQuestions.filter(q => q.number >= start && q.number <= end);
+        this.currentQuestionIndex = 0;
+        this.answers = {};
+        this.bookmarkedQuestions.clear();
+        this.remainingTime = this.timeLimit;
+        this.updateTimerDisplay();
+    }
+
+    initializeUI() {
+        this.bindEvents();
+        this.updateTheme();
+        this.showScreen('welcome-screen');
+    }
+
     bindEvents() {
-        // Start quiz button
-        document.getElementById('start-quiz-btn').addEventListener('click', () => {
-            if (this.selectedCaseStudies.length === 0) {
-                alert('Please select at least one case study to start the quiz.');
-                return;
-            }
-            this.startQuiz();
+        document.getElementById('start-section-select').addEventListener('click', () => this.showScreen('section-select-screen'));
+        document.getElementById('theme-toggle').addEventListener('click', () => this.toggleTheme());
+        document.getElementById('view-instructions').addEventListener('click', () => this.showScreen('instructions-screen'));
+        document.getElementById('back-to-welcome').addEventListener('click', () => this.showScreen('welcome-screen'));
+        document.getElementById('back-to-welcome-section').addEventListener('click', () => this.showScreen('welcome-screen'));
+        // Section 1 start
+        document.querySelectorAll('.start-section-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const section = parseInt(e.target.closest('.section-card').dataset.section);
+                this.setSectionQuestions(section);
+                this.showScreen('quiz-screen');
+                this.updateQuizDisplay();
+                document.getElementById('section-number').textContent = section;
+                document.getElementById('total-questions').textContent = this.questions.length;
+            });
         });
-        
-        // Navigation buttons
+        // Quiz events
         document.getElementById('prev-btn').addEventListener('click', () => this.previousQuestion());
         document.getElementById('next-btn').addEventListener('click', () => this.nextQuestion());
-        
-        // Results screen buttons
-        document.getElementById('retry-btn').addEventListener('click', () => this.retryQuiz());
-        document.getElementById('home-btn').addEventListener('click', () => this.goHome());
-    }
-    
-    startQuiz() {
-        // Prepare questions for selected case studies
-        this.allQuestions = [];
-        this.selectedCaseStudies.forEach(studyId => {
-            if (this.questions[studyId]) {
-                this.allQuestions.push(...this.questions[studyId].map(q => ({
-                    ...q,
-                    caseStudyId: studyId,
-                    caseStudyTitle: this.caseStudies.find(s => s.id === studyId).title
-                })));
-            }
+        document.getElementById('review-btn').addEventListener('click', () => this.showReviewScreen());
+        document.getElementById('finish-btn').addEventListener('click', () => this.finishQuiz());
+        document.getElementById('bookmark-btn').addEventListener('click', () => this.toggleBookmark());
+        document.getElementById('theme-toggle-quiz').addEventListener('click', () => this.toggleTheme());
+        // Option selection
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', (e) => this.selectOption(e.currentTarget.dataset.option));
         });
         
-        // Shuffle questions
-        this.allQuestions = this.shuffleArray(this.allQuestions);
+        // Review screen events
+        document.getElementById('back-to-quiz').addEventListener('click', () => this.showScreen('quiz-screen'));
+        document.getElementById('submit-quiz').addEventListener('click', () => this.submitQuiz());
         
-        this.currentQuestionIndex = 0;
-        this.answers = [];
-        this.score = 0;
-        this.correctAnswers = 0;
-        this.totalQuestions = this.allQuestions.length;
+        // Results screen events
+        document.getElementById('review-answers').addEventListener('click', () => this.showAnswerReview());
+        document.getElementById('restart-quiz').addEventListener('click', () => this.restartQuiz());
+        document.getElementById('back-to-home').addEventListener('click', () => this.showScreen('welcome-screen'));
         
-        this.showScreen('quiz');
-        this.displayQuestion();
+        // Answer review screen events
+        document.getElementById('close-review').addEventListener('click', () => this.showScreen('results-screen'));
+        
+        // Filter events for answer review
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => this.filterReviewItems(e.currentTarget.dataset.filter));
+        });
     }
-    
-    displayQuestion() {
-        if (this.currentQuestionIndex >= this.allQuestions.length) {
-            this.showResults();
-            return;
+
+    showLoadingScreen() {
+        document.getElementById('loading-screen').style.display = 'flex';
+    }
+
+    hideLoadingScreen() {
+        setTimeout(() => {
+            document.getElementById('loading-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.display = 'none';
+            }, 500);
+        }, 1000);
+    }
+
+    showScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(screen => {
+            screen.classList.remove('active');
+        });
+        document.getElementById(screenId).classList.add('active');
+        if (screenId === 'quiz-screen') {
+            this.updateQuizDisplay();
+            this.startTimer(); // Start timer when quiz begins
+        } else {
+            this.stopTimer(); // Stop timer when leaving quiz
+        }
+    }
+
+    startTimer() {
+        this.startTime = Date.now();
+        this.remainingTime = this.timeLimit;
+        this.updateTimerDisplay();
+        
+        this.timer = setInterval(() => {
+            this.remainingTime--;
+            this.updateTimerDisplay();
+            
+            // Check for time warnings
+            if (this.remainingTime === 300) { // 5 minutes left
+                this.showTimeWarning('5 minutes remaining!');
+            } else if (this.remainingTime === 60) { // 1 minute left
+                this.showTimeWarning('1 minute remaining!');
+            } else if (this.remainingTime === 30) { // 30 seconds left
+                this.showTimeWarning('30 seconds remaining!');
+            }
+            
+            // Time's up!
+            if (this.remainingTime <= 0) {
+                this.timeUp();
+            }
+        }, 1000);
+    }
+
+    updateTimerDisplay() {
+        const minutes = Math.floor(this.remainingTime / 60);
+        const seconds = this.remainingTime % 60;
+        const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        document.getElementById('timer-display').textContent = display;
+        
+        // Update timer container styling based on remaining time
+        const timerContainer = document.querySelector('.timer-container');
+        timerContainer.classList.remove('warning', 'danger');
+        
+        if (this.remainingTime <= 300) { // 5 minutes or less
+            timerContainer.classList.add('warning');
+        }
+        if (this.remainingTime <= 60) { // 1 minute or less
+            timerContainer.classList.add('danger');
+        }
+    }
+
+    showTimeWarning(message) {
+        // Create a temporary warning message
+        const warning = document.createElement('div');
+        warning.className = 'answer-feedback';
+        warning.textContent = message;
+        warning.style.background = 'rgba(239, 68, 68, 0.95)';
+        document.body.appendChild(warning);
+        
+        // Remove warning after 3 seconds
+        setTimeout(() => {
+            if (warning.parentNode) {
+                warning.parentNode.removeChild(warning);
+            }
+        }, 3000);
+    }
+
+    timeUp() {
+        clearInterval(this.timer);
+        this.showTimeWarning('Time\'s up! Submitting quiz...');
+        
+        // Auto-submit after 2 seconds
+        setTimeout(() => {
+            this.finishQuiz();
+        }, 2000);
+    }
+
+    stopTimer() {
+        if (this.timer) {
+            clearInterval(this.timer);
+            this.timer = null;
+        }
+    }
+
+    startQuiz() {
+        this.currentQuestionIndex = 0;
+        this.answers = {};
+        this.bookmarkedQuestions.clear();
+        this.startTime = new Date();
+        this.showScreen('quiz-screen');
+        this.updateQuizDisplay();
+    }
+
+    updateQuizDisplay() {
+        if (this.currentQuestionIndex >= this.questions.length) return;
+        
+        const question = this.questions[this.currentQuestionIndex];
+        document.getElementById('section-number').textContent = this.selectedSection;
+        document.getElementById('current-question').textContent = question.number;
+        document.getElementById('total-questions').textContent = this.questions.length;
+        
+        const progress = ((this.currentQuestionIndex + 1) / this.questions.length) * 100;
+        document.getElementById('progress-fill').style.width = `${progress}%`;
+        document.getElementById('progress-text').textContent = `${Math.round(progress)}%`;
+        
+        document.getElementById('question-text').textContent = question.question;
+        document.getElementById('option-a').textContent = question.options.A;
+        document.getElementById('option-b').textContent = question.options.B;
+        document.getElementById('option-c').textContent = question.options.C;
+        document.getElementById('option-d').textContent = question.options.D;
+        
+        // Clear all option classes
+        document.querySelectorAll('.option').forEach(option => {
+            option.classList.remove('selected', 'correct', 'incorrect');
+        });
+        
+        // Show previous answer if exists
+        const selectedAnswer = this.answers[question.number];
+        if (selectedAnswer) {
+            const selectedOption = document.querySelector(`[data-option="${selectedAnswer}"]`);
+            if (selectedOption) {
+                selectedOption.classList.add('selected');
+                
+                // Show correct/incorrect feedback for answered questions
+                if (selectedAnswer === question.answer) {
+                    selectedOption.classList.add('correct');
+                } else {
+                    selectedOption.classList.add('incorrect');
+                    // Also show correct answer
+                    const correctOption = document.querySelector(`[data-option="${question.answer}"]`);
+                    if (correctOption) {
+                        correctOption.classList.add('correct');
+                    }
+                }
+            }
         }
         
-        const question = this.allQuestions[this.currentQuestionIndex];
+        this.updateBookmarkButton();
+        this.updateNavigationButtons();
+    }
+
+    selectOption(option) {
+        const currentQuestion = this.questions[this.currentQuestionIndex];
+        const questionNumber = currentQuestion.number;
         
-        // Update header
-        document.getElementById('current-topic').textContent = question.caseStudyTitle;
-        document.getElementById('question-counter').textContent = 
-            `Question ${this.currentQuestionIndex + 1} of ${this.totalQuestions}`;
+        // Check if answer is already submitted for this question
+        if (this.answers[questionNumber]) {
+            return; // Don't allow changing answers
+        }
         
-        // Update progress bar
-        const progress = ((this.currentQuestionIndex + 1) / this.totalQuestions) * 100;
-        document.getElementById('question-progress').style.width = `${progress}%`;
+        // Store the answer
+        this.answers[questionNumber] = option;
         
-        // Display question
-        document.getElementById('question-text').textContent = question.question;
-        
-        // Display options
-        const optionsContainer = document.getElementById('options-container');
-        optionsContainer.innerHTML = '';
-        
-        question.options.forEach((option, index) => {
-            const optionElement = document.createElement('div');
-            optionElement.className = 'option';
-            optionElement.innerHTML = `
-                <input type="radio" name="question" value="${index}" id="option-${index}">
-                <label for="option-${index}">${option}</label>
-            `;
-            
-            // Check if already answered
-            if (this.answers[this.currentQuestionIndex] !== undefined) {
-                if (this.answers[this.currentQuestionIndex] === index) {
-                    optionElement.classList.add('selected');
-                }
-                if (index === question.correct) {
-                    optionElement.classList.add('correct');
-                } else if (this.answers[this.currentQuestionIndex] === index && index !== question.correct) {
-                    optionElement.classList.add('incorrect');
-                }
-            }
-            
-            optionElement.addEventListener('click', () => this.selectOption(index));
-            optionsContainer.appendChild(optionElement);
+        // Remove selected class from all options
+        document.querySelectorAll('.option').forEach(opt => {
+            opt.classList.remove('selected');
         });
+        
+        // Add selected class to chosen option
+        const selectedOption = document.querySelector(`[data-option="${option}"]`);
+        if (selectedOption) {
+            selectedOption.classList.add('selected');
+        }
+        
+        // Show correct/incorrect feedback
+        this.showAnswerFeedback(option, currentQuestion.answer);
         
         // Update navigation buttons
         this.updateNavigationButtons();
     }
-    
-    selectOption(optionIndex) {
-        const question = this.allQuestions[this.currentQuestionIndex];
-        this.answers[this.currentQuestionIndex] = optionIndex;
-        
-        // Update option styling
-        const options = document.querySelectorAll('.option');
-        options.forEach((option, index) => {
-            option.classList.remove('selected', 'correct', 'incorrect');
-            
-            if (index === optionIndex) {
-                option.classList.add('selected');
-            }
-            
-            if (index === question.correct) {
-                option.classList.add('correct');
-            } else if (index === optionIndex && index !== question.correct) {
-                option.classList.add('incorrect');
-            }
+
+    showAnswerFeedback(selectedOption, correctAnswer) {
+        // Remove any existing feedback classes
+        document.querySelectorAll('.option').forEach(opt => {
+            opt.classList.remove('correct', 'incorrect');
         });
         
-        // Update score
-        if (optionIndex === question.correct) {
-            this.correctAnswers++;
-            this.score += 10;
+        // Show correct answer in green
+        const correctOption = document.querySelector(`[data-option="${correctAnswer}"]`);
+        if (correctOption) {
+            correctOption.classList.add('correct');
         }
         
-        // Update header stats
-        document.getElementById('score').textContent = this.score;
+        // Show selected option in red if wrong
+        if (selectedOption !== correctAnswer) {
+            const wrongOption = document.querySelector(`[data-option="${selectedOption}"]`);
+            if (wrongOption) {
+                wrongOption.classList.add('incorrect');
+            }
+        }
         
-        this.updateNavigationButtons();
+        // Add a small delay to show the feedback
+        setTimeout(() => {
+            // Auto-advance to next question after 1.5 seconds
+            if (this.currentQuestionIndex < this.questions.length - 1) {
+                this.nextQuestion();
+            }
+        }, 1500);
     }
-    
+
+    previousQuestion() {
+        if (this.currentQuestionIndex > 0) {
+            this.currentQuestionIndex--;
+            this.updateQuizDisplay();
+        }
+    }
+
+    nextQuestion() {
+        if (this.currentQuestionIndex < this.questions.length - 1) {
+            this.currentQuestionIndex++;
+            this.updateQuizDisplay();
+        }
+    }
+
     updateNavigationButtons() {
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
         
-        prevBtn.disabled = this.currentQuestionIndex === 0;
-        nextBtn.textContent = this.currentQuestionIndex === this.allQuestions.length - 1 ? 'Finish' : 'Next';
-    }
-    
-    previousQuestion() {
-        if (this.currentQuestionIndex > 0) {
-            this.currentQuestionIndex--;
-            this.displayQuestion();
-        }
-    }
-    
-    nextQuestion() {
-        if (this.answers[this.currentQuestionIndex] === undefined) {
-            alert('Please select an answer before continuing.');
-            return;
-        }
-        
-        if (this.currentQuestionIndex < this.allQuestions.length - 1) {
-            this.currentQuestionIndex++;
-            this.displayQuestion();
+        // Previous button
+        if (this.currentQuestionIndex === 0) {
+            prevBtn.disabled = true;
+            prevBtn.classList.add('disabled');
         } else {
-            this.showResults();
+            prevBtn.disabled = false;
+            prevBtn.classList.remove('disabled');
+        }
+        
+        // Next button
+        if (this.currentQuestionIndex === this.questions.length - 1) {
+            nextBtn.disabled = true;
+            nextBtn.classList.add('disabled');
+        } else {
+            nextBtn.disabled = false;
+            nextBtn.classList.remove('disabled');
         }
     }
-    
-    showResults() {
-        const accuracy = Math.round((this.correctAnswers / this.totalQuestions) * 100);
-        
-        document.getElementById('correct-answers').textContent = this.correctAnswers;
-        document.getElementById('incorrect-answers').textContent = this.totalQuestions - this.correctAnswers;
-        document.getElementById('accuracy').textContent = `${accuracy}%`;
-        
-        this.showScreen('results');
+
+    toggleBookmark() {
+        const question = this.questions[this.currentQuestionIndex];
+        const questionNumber = question.number;
+
+        if (this.bookmarkedQuestions.has(questionNumber)) {
+            this.bookmarkedQuestions.delete(questionNumber);
+        } else {
+            this.bookmarkedQuestions.add(questionNumber);
+        }
+
+        this.updateBookmarkButton();
     }
-    
-    retryQuiz() {
+
+    updateBookmarkButton() {
+        const question = this.questions[this.currentQuestionIndex];
+        const bookmarkBtn = document.getElementById('bookmark-btn');
+        const icon = bookmarkBtn.querySelector('i');
+
+        if (this.bookmarkedQuestions.has(question.number)) {
+            icon.className = 'fas fa-bookmark';
+            bookmarkBtn.style.color = 'var(--warning-color)';
+        } else {
+            icon.className = 'far fa-bookmark';
+            bookmarkBtn.style.color = 'var(--text-secondary)';
+        }
+    }
+
+    showReviewScreen() {
+        this.showScreen('review-screen');
+    }
+
+    updateReviewScreen() {
+        const answeredCount = Object.keys(this.answers).length;
+        const bookmarkedCount = this.bookmarkedQuestions.size;
+
+        document.getElementById('answered-count').textContent = answeredCount;
+        document.getElementById('unanswered-count').textContent = this.questions.length - answeredCount;
+        document.getElementById('bookmarked-count').textContent = bookmarkedCount;
+    }
+
+    finishQuiz() {
+        this.stopTimer();
+        // Calculate results and show results screen
+        this.updateResultsScreen();
+        this.showScreen('results-screen');
+    }
+
+    submitQuiz() {
+        this.showScreen('results-screen');
+    }
+
+    updateResultsScreen() {
+        const answeredQuestions = Object.keys(this.answers).length;
+        let correctAnswers = 0;
+
+        // Calculate correct answers
+        Object.keys(this.answers).forEach(questionNumber => {
+            const question = this.questions.find(q => q.number == questionNumber);
+            if (question && this.answers[questionNumber] === question.answer) {
+                correctAnswers++;
+            }
+        });
+
+        const percentage = answeredQuestions > 0 ? Math.round((correctAnswers / answeredQuestions) * 100) : 0;
+        const incorrectAnswers = answeredQuestions - correctAnswers;
+
+        // Calculate time taken
+        const endTime = new Date();
+        const timeTaken = Math.round((endTime - this.startTime) / 1000);
+        const minutes = Math.floor(timeTaken / 60);
+        const seconds = timeTaken % 60;
+        const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+        // Update results display
+        document.getElementById('score-percentage').textContent = `${percentage}%`;
+        document.getElementById('correct-answers').textContent = correctAnswers;
+        document.getElementById('total-answered').textContent = answeredQuestions;
+        document.getElementById('correct-count').textContent = correctAnswers;
+        document.getElementById('incorrect-count').textContent = incorrectAnswers;
+        document.getElementById('quiz-time').textContent = timeString;
+
+        // Update score circle
+        const scoreCircle = document.querySelector('.score-circle');
+        scoreCircle.style.background = `conic-gradient(var(--primary-color) ${percentage * 3.6}deg, var(--border) ${percentage * 3.6}deg)`;
+
+        // Update score text
+        const scoreText = document.getElementById('score-text');
+        const scoreDescription = document.getElementById('score-description');
+        
+        if (percentage >= 90) {
+            scoreText.textContent = 'Excellent!';
+        } else if (percentage >= 80) {
+            scoreText.textContent = 'Great Job!';
+        } else if (percentage >= 70) {
+            scoreText.textContent = 'Good Work!';
+        } else if (percentage >= 60) {
+            scoreText.textContent = 'Not Bad!';
+        } else {
+            scoreText.textContent = 'Keep Learning!';
+        }
+    }
+
+    showAnswerReview() {
+        this.showScreen('answer-review-screen');
+        this.populateReviewList();
+    }
+
+    populateReviewList() {
+        const reviewList = document.getElementById('review-list');
+        reviewList.innerHTML = '';
+
+        this.questions.forEach(question => {
+            const userAnswer = this.answers[question.number];
+            const isCorrect = userAnswer === question.answer;
+            const isBookmarked = this.bookmarkedQuestions.has(question.number);
+            const isAnswered = userAnswer !== undefined;
+
+            const reviewItem = document.createElement('div');
+            reviewItem.className = `review-item ${isCorrect ? 'correct' : 'incorrect'} ${isBookmarked ? 'bookmarked' : ''}`;
+            reviewItem.dataset.filter = this.getReviewItemFilter(isCorrect, isBookmarked, isAnswered);
+
+            reviewItem.innerHTML = `
+                <div class="review-item-header">
+                    <h4>Question ${question.number}</h4>
+                    <div class="review-item-status">
+                        ${isBookmarked ? '<i class="fas fa-bookmark" title="Bookmarked"></i>' : ''}
+                        ${isCorrect ? '<i class="fas fa-check" title="Correct"></i>' : '<i class="fas fa-times" title="Incorrect"></i>'}
+                    </div>
+                </div>
+                <p class="review-question">${question.question}</p>
+                <div class="review-options">
+                    ${Object.entries(question.options).map(([key, value]) => `
+                        <div class="review-option ${this.getReviewOptionClass(key, question.answer, userAnswer)}">
+                            <span class="option-label">${key}</span>
+                            <span class="option-text">${value}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            reviewList.appendChild(reviewItem);
+        });
+    }
+
+    getReviewItemFilter(isCorrect, isBookmarked, isAnswered) {
+        if (isBookmarked) return 'bookmarked';
+        if (!isAnswered) return 'unanswered';
+        return isCorrect ? 'correct' : 'incorrect';
+    }
+
+    getReviewOptionClass(optionKey, correctAnswer, userAnswer) {
+        if (optionKey === correctAnswer) return 'correct-answer';
+        if (optionKey === userAnswer && userAnswer !== correctAnswer) return 'incorrect-answer';
+        return '';
+    }
+
+    filterReviewItems(filter) {
+        // Update active filter button
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+
+        // Filter review items
+        document.querySelectorAll('.review-item').forEach(item => {
+            const itemFilter = item.dataset.filter;
+            if (filter === 'all' || itemFilter === filter) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    restartQuiz() {
         this.startQuiz();
     }
-    
-    goHome() {
-        this.selectedCaseStudies = [];
-        this.currentQuestionIndex = 0;
-        this.answers = [];
-        this.score = 0;
-        this.correctAnswers = 0;
-        this.totalQuestions = 0;
-        
-        this.renderCaseStudies();
-        this.updateStats();
-        this.showScreen('welcome');
+
+    toggleTheme() {
+        this.isDarkTheme = !this.isDarkTheme;
+        this.updateTheme();
     }
-    
-    showScreen(screenName) {
-        // Hide all screens
-        document.querySelectorAll('.screen').forEach(screen => {
-            screen.classList.remove('active');
+
+    updateTheme() {
+        const theme = this.isDarkTheme ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+        
+        // Update theme toggle icons
+        const themeIcons = document.querySelectorAll('#theme-toggle i, #theme-toggle-quiz i');
+        themeIcons.forEach(icon => {
+            icon.className = this.isDarkTheme ? 'fas fa-sun' : 'fas fa-moon';
         });
-        
-        // Show target screen
-        document.getElementById(`${screenName}-screen`).classList.add('active');
-        this.currentScreen = screenName;
     }
-    
-    shuffleArray(array) {
-        const shuffled = [...array];
-        for (let i = shuffled.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-        }
-        return shuffled;
+
+    showError(message) {
+        // Create and show error message
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        errorDiv.textContent = message;
+        errorDiv.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--error-color);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            z-index: 10000;
+            animation: slideInRight 0.3s ease;
+        `;
+        
+        document.body.appendChild(errorDiv);
+        
+        setTimeout(() => {
+            errorDiv.remove();
+        }, 5000);
+    }
+
+    getEmbeddedQuestions() {
+        return [
+            {
+                "number": 1,
+                "question": "What is the primary purpose of branding?",
+                "options": {
+                    "A": "To create advertisements",
+                    "B": "To launch new products", 
+                    "C": "To create a unique identity and perception in consumers' minds",
+                    "D": "To reduce business expenses"
+                },
+                "answer": "C"
+            },
+            {
+                "number": 2,
+                "question": "Which of the following is NOT a key element of a strong brand?",
+                "options": {
+                    "A": "Brand Name",
+                    "B": "Brand Voice",
+                    "C": "Brand Story", 
+                    "D": "Balance Sheet"
+                },
+                "answer": "D"
+            },
+            {
+                "number": 3,
+                "question": "What is included in a brand's visual identity?",
+                "options": {
+                    "A": "Customer reviews",
+                    "B": "Profit margins",
+                    "C": "Logo, color scheme, typography",
+                    "D": "Mission statement"
+                },
+                "answer": "C"
+            },
+            {
+                "number": 4,
+                "question": "What is a 'brand story'?",
+                "options": {
+                    "A": "A list of achievements",
+                    "B": "A detailed marketing report",
+                    "C": "A narrative that explains the brand's purpose and builds connection",
+                    "D": "A financial summary of the brand"
+                },
+                "answer": "C"
+            },
+            {
+                "number": 5,
+                "question": "What does the term \"perpetual process\" in branding imply?",
+                "options": {
+                    "A": "It is done once during a product launch",
+                    "B": "It stops once the brand is recognized",
+                    "C": "Branding must evolve continuously with market and customer changes",
+                    "D": "Branding applies only to online businesses"
+                },
+                "answer": "C"
+            },
+            {
+                "number": 6,
+                "question": "What defines a brand voice?",
+                "options": {
+                    "A": "The founder's speaking style",
+                    "B": "The tone and style of communication used by the brand",
+                    "C": "The logo design",
+                    "D": "Customer complaints"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 7,
+                "question": "How does branding create emotional connection?",
+                "options": {
+                    "A": "By lowering prices",
+                    "B": "By connecting with customers' values and identities",
+                    "C": "Through expensive ads",
+                    "D": "By hiding weaknesses"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 8,
+                "question": "Who are considered stakeholders in branding?",
+                "options": {
+                    "A": "Only customers",
+                    "B": "Only employees",
+                    "C": "Only investors",
+                    "D": "Customers, employees, partners, and the public"
+                },
+                "answer": "D"
+            },
+            {
+                "number": 9,
+                "question": "What contributes to perceived brand value?",
+                "options": {
+                    "A": "Number of employees",
+                    "B": "Consistent branding and storytelling",
+                    "C": "Price of product",
+                    "D": "The age of the company"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 10,
+                "question": "What should a brand story begin with?",
+                "options": {
+                    "A": "The company's pricing",
+                    "B": "The founder's favorite color",
+                    "C": "The brand's purpose beyond making profit",
+                    "D": "A social media strategy"
+                },
+                "answer": "C"
+            },
+            {
+                "number": 11,
+                "question": "What is the main goal of brand positioning?",
+                "options": {
+                    "A": "To increase production costs",
+                    "B": "To occupy a distinct place in the target market's mind",
+                    "C": "To reduce marketing expenses",
+                    "D": "To copy competitors"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 12,
+                "question": "Which of the following is a key component of brand positioning?",
+                "options": {
+                    "A": "Financial statements",
+                    "B": "Unique value proposition",
+                    "C": "Employee handbook",
+                    "D": "Office location"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 13,
+                "question": "What is brand differentiation?",
+                "options": {
+                    "A": "Making your product cheaper",
+                    "B": "Highlighting what makes your brand unique from competitors",
+                    "C": "Copying successful brands",
+                    "D": "Reducing product quality"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 14,
+                "question": "What is the purpose of a brand promise?",
+                "options": {
+                    "A": "To make false claims",
+                    "B": "To communicate what customers can expect from the brand",
+                    "C": "To increase prices",
+                    "D": "To confuse competitors"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 15,
+                "question": "What is brand consistency?",
+                "options": {
+                    "A": "Always using the same price",
+                    "B": "Maintaining uniform brand elements across all touchpoints",
+                    "C": "Never changing anything",
+                    "D": "Using the same employees"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 16,
+                "question": "What is brand equity?",
+                "options": {
+                    "A": "The financial value of the brand",
+                    "B": "The value a brand adds to a product beyond its functional benefits",
+                    "C": "The cost of creating the brand",
+                    "D": "The number of products sold"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 17,
+                "question": "What is brand awareness?",
+                "options": {
+                    "A": "How much money the brand makes",
+                    "B": "How well customers recognize and recall the brand",
+                    "C": "The number of employees",
+                    "D": "The brand's age"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 18,
+                "question": "What is brand loyalty?",
+                "options": {
+                    "A": "Employees staying with the company",
+                    "B": "Customers' commitment to repeatedly purchase from the brand",
+                    "C": "The brand's legal status",
+                    "D": "The brand's location"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 19,
+                "question": "What is brand perception?",
+                "options": {
+                    "A": "What the company thinks about itself",
+                    "B": "How customers view and think about the brand",
+                    "C": "The brand's financial performance",
+                    "D": "The brand's history"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 20,
+                "question": "What is brand recognition?",
+                "options": {
+                    "A": "The brand's legal registration",
+                    "B": "The ability of consumers to identify the brand when exposed to it",
+                    "C": "The brand's profitability",
+                    "D": "The brand's size"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 21,
+                "question": "What is brand recall?",
+                "options": {
+                    "A": "Remembering the brand's address",
+                    "B": "The ability to retrieve the brand from memory when given a product category",
+                    "C": "The brand's financial records",
+                    "D": "The brand's employee list"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 22,
+                "question": "What is brand personality?",
+                "options": {
+                    "A": "The CEO's personality",
+                    "B": "The set of human characteristics associated with the brand",
+                    "C": "The brand's legal personality",
+                    "D": "The brand's physical appearance"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 23,
+                "question": "What is brand image?",
+                "options": {
+                    "A": "The brand's logo",
+                    "B": "The impression and perception customers have of the brand",
+                    "C": "The brand's financial image",
+                    "D": "The brand's physical image"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 24,
+                "question": "What is brand identity?",
+                "options": {
+                    "A": "The brand's legal identity",
+                    "B": "The collection of all elements that a company creates to portray the right image",
+                    "C": "The brand's financial identity",
+                    "D": "The brand's employee identity"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 25,
+                "question": "What is brand architecture?",
+                "options": {
+                    "A": "The brand's building design",
+                    "B": "The structure of brand relationships within a company's portfolio",
+                    "C": "The brand's office architecture",
+                    "D": "The brand's website design"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 26,
+                "question": "What is a brand extension?",
+                "options": {
+                    "A": "Making the brand name longer",
+                    "B": "Using an existing brand name for a new product category",
+                    "C": "Extending the brand's office hours",
+                    "D": "Making the brand's logo bigger"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 27,
+                "question": "What is brand dilution?",
+                "options": {
+                    "A": "Making the brand weaker",
+                    "B": "The weakening of a brand's power due to overuse or misuse",
+                    "C": "Diluting the brand's colors",
+                    "D": "Reducing the brand's size"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 28,
+                "question": "What is brand revitalization?",
+                "options": {
+                    "A": "Making the brand younger",
+                    "B": "Updating and refreshing a brand to maintain relevance",
+                    "C": "Making the brand more expensive",
+                    "D": "Changing the brand's location"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 29,
+                "question": "What is brand migration?",
+                "options": {
+                    "A": "Moving the brand to another country",
+                    "B": "The process of moving customers from one brand to another",
+                    "C": "Moving the brand's office",
+                    "D": "Changing the brand's name"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 30,
+                "question": "What is brand stretching?",
+                "options": {
+                    "A": "Making the brand logo stretch",
+                    "B": "Extending a brand into new product categories",
+                    "C": "Stretching the brand's budget",
+                    "D": "Making the brand taller"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 31,
+                "question": "What is brand cannibalization?",
+                "options": {
+                    "A": "Eating the brand",
+                    "B": "When a new product takes sales from existing products of the same brand",
+                    "C": "Destroying the brand",
+                    "D": "Selling the brand"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 32,
+                "question": "What is brand co-creation?",
+                "options": {
+                    "A": "Creating brands together",
+                    "B": "Involving customers in the brand development process",
+                    "C": "Creating multiple brands",
+                    "D": "Creating brand partnerships"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 33,
+                "question": "What is brand community?",
+                "options": {
+                    "A": "The brand's neighborhood",
+                    "B": "A group of people who share an interest in a brand",
+                    "C": "The brand's employees",
+                    "D": "The brand's customers"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 34,
+                "question": "What is brand advocacy?",
+                "options": {
+                    "A": "The brand's legal advocate",
+                    "B": "When customers actively promote and recommend the brand",
+                    "C": "The brand's spokesperson",
+                    "D": "The brand's lawyer"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 35,
+                "question": "What is brand engagement?",
+                "options": {
+                    "A": "The brand's wedding",
+                    "B": "The level of interaction and connection customers have with the brand",
+                    "C": "The brand's employment",
+                    "D": "The brand's commitment"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 36,
+                "question": "What is brand experience?",
+                "options": {
+                    "A": "The brand's work experience",
+                    "B": "The sum of all interactions a customer has with the brand",
+                    "C": "The brand's life experience",
+                    "D": "The brand's travel experience"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 37,
+                "question": "What is brand touchpoint?",
+                "options": {
+                    "A": "The brand's contact point",
+                    "B": "Any point of contact between a customer and the brand",
+                    "C": "The brand's touch screen",
+                    "D": "The brand's physical touch"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 38,
+                "question": "What is brand messaging?",
+                "options": {
+                    "A": "The brand's text messages",
+                    "B": "The communication strategy and content used to convey brand values",
+                    "C": "The brand's email messages",
+                    "D": "The brand's voice messages"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 39,
+                "question": "What is brand tone?",
+                "options": {
+                    "A": "The brand's musical tone",
+                    "B": "The emotional quality of the brand's communication",
+                    "C": "The brand's voice tone",
+                    "D": "The brand's sound"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 40,
+                "question": "What is brand voice?",
+                "options": {
+                    "A": "The brand's speaking voice",
+                    "B": "The personality and character of the brand's communication",
+                    "C": "The brand's singing voice",
+                    "D": "The brand's sound"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 41,
+                "question": "What is brand language?",
+                "options": {
+                    "A": "The brand's spoken language",
+                    "B": "The specific words and phrases used to communicate the brand",
+                    "C": "The brand's written language",
+                    "D": "The brand's native language"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 42,
+                "question": "What is brand positioning statement?",
+                "options": {
+                    "A": "The brand's legal statement",
+                    "B": "A concise statement that defines the brand's unique place in the market",
+                    "C": "The brand's mission statement",
+                    "D": "The brand's vision statement"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 43,
+                "question": "What is brand promise?",
+                "options": {
+                    "A": "The brand's legal promise",
+                    "B": "A clear statement of what customers can expect from the brand",
+                    "C": "The brand's financial promise",
+                    "D": "The brand's employment promise"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 44,
+                "question": "What is brand values?",
+                "options": {
+                    "A": "The brand's financial value",
+                    "B": "The core principles and beliefs that guide the brand",
+                    "C": "The brand's market value",
+                    "D": "The brand's asset value"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 45,
+                "question": "What is brand mission?",
+                "options": {
+                    "A": "The brand's secret mission",
+                    "B": "The brand's purpose and reason for existence",
+                    "C": "The brand's military mission",
+                    "D": "The brand's space mission"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 46,
+                "question": "What is brand vision?",
+                "options": {
+                    "A": "The brand's eyesight",
+                    "B": "The brand's future aspirations and goals",
+                    "C": "The brand's visual design",
+                    "D": "The brand's eye test"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 47,
+                "question": "What is brand strategy?",
+                "options": {
+                    "A": "The brand's military strategy",
+                    "B": "A long-term plan for developing a successful brand",
+                    "C": "The brand's business strategy",
+                    "D": "The brand's marketing strategy"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 48,
+                "question": "What is brand management?",
+                "options": {
+                    "A": "Managing the brand's employees",
+                    "B": "The process of maintaining and improving brand value",
+                    "C": "Managing the brand's finances",
+                    "D": "Managing the brand's operations"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 49,
+                "question": "What is brand monitoring?",
+                "options": {
+                    "A": "Watching the brand",
+                    "B": "Tracking and analyzing brand performance and perception",
+                    "C": "Monitoring the brand's security",
+                    "D": "Monitoring the brand's health"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 50,
+                "question": "What is brand measurement?",
+                "options": {
+                    "A": "Measuring the brand's size",
+                    "B": "Quantifying brand performance and value",
+                    "C": "Measuring the brand's weight",
+                    "D": "Measuring the brand's height"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 51,
+                "question": "What is brand analytics?",
+                "options": {
+                    "A": "The brand's mathematical analysis",
+                    "B": "The analysis of brand data to improve performance",
+                    "C": "The brand's statistical analysis",
+                    "D": "The brand's financial analysis"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 52,
+                "question": "What is brand research?",
+                "options": {
+                    "A": "Researching the brand's history",
+                    "B": "Systematic investigation to understand brand performance",
+                    "C": "Researching the brand's competitors",
+                    "D": "Researching the brand's market"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 53,
+                "question": "What is brand audit?",
+                "options": {
+                    "A": "The brand's financial audit",
+                    "B": "A comprehensive examination of brand performance and assets",
+                    "C": "The brand's legal audit",
+                    "D": "The brand's tax audit"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 54,
+                "question": "What is brand valuation?",
+                "options": {
+                    "A": "The brand's property value",
+                    "B": "The process of determining the financial value of a brand",
+                    "C": "The brand's market value",
+                    "D": "The brand's asset value"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 55,
+                "question": "What is brand equity measurement?",
+                "options": {
+                    "A": "Measuring the brand's financial equity",
+                    "B": "Quantifying the value and strength of brand equity",
+                    "C": "Measuring the brand's stock equity",
+                    "D": "Measuring the brand's property equity"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 56,
+                "question": "What is brand awareness measurement?",
+                "options": {
+                    "A": "Measuring brand recognition",
+                    "B": "Quantifying how well customers know and recognize the brand",
+                    "C": "Measuring brand recall",
+                    "D": "Measuring brand recognition"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 57,
+                "question": "What is brand loyalty measurement?",
+                "options": {
+                    "A": "Measuring customer loyalty",
+                    "B": "Quantifying customer commitment and repeat purchase behavior",
+                    "C": "Measuring employee loyalty",
+                    "D": "Measuring brand commitment"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 58,
+                "question": "What is brand perception measurement?",
+                "options": {
+                    "A": "Measuring brand image",
+                    "B": "Quantifying how customers view and think about the brand",
+                    "C": "Measuring brand awareness",
+                    "D": "Measuring brand recognition"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 59,
+                "question": "What is brand satisfaction measurement?",
+                "options": {
+                    "A": "Measuring customer satisfaction",
+                    "B": "Quantifying how satisfied customers are with the brand",
+                    "C": "Measuring employee satisfaction",
+                    "D": "Measuring brand happiness"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 60,
+                "question": "What is brand preference measurement?",
+                "options": {
+                    "A": "Measuring brand choice",
+                    "B": "Quantifying customer preference for the brand over competitors",
+                    "C": "Measuring brand selection",
+                    "D": "Measuring brand choice"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 61,
+                "question": "What is brand consideration measurement?",
+                "options": {
+                    "A": "Measuring brand thought",
+                    "B": "Quantifying whether customers consider the brand when making purchases",
+                    "C": "Measuring brand awareness",
+                    "D": "Measuring brand recognition"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 62,
+                "question": "What is brand purchase intent measurement?",
+                "options": {
+                    "A": "Measuring purchase intention",
+                    "B": "Quantifying customers' likelihood to purchase the brand",
+                    "C": "Measuring buying intention",
+                    "D": "Measuring shopping intention"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 63,
+                "question": "What is brand recommendation measurement?",
+                "options": {
+                    "A": "Measuring brand advice",
+                    "B": "Quantifying customers' likelihood to recommend the brand",
+                    "C": "Measuring brand suggestion",
+                    "D": "Measuring brand referral"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 64,
+                "question": "What is brand advocacy measurement?",
+                "options": {
+                    "A": "Measuring brand support",
+                    "B": "Quantifying customers' active promotion of the brand",
+                    "C": "Measuring brand endorsement",
+                    "D": "Measuring brand recommendation"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 65,
+                "question": "What is brand engagement measurement?",
+                "options": {
+                    "A": "Measuring brand interaction",
+                    "B": "Quantifying the level of customer interaction with the brand",
+                    "C": "Measuring brand involvement",
+                    "D": "Measuring brand participation"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 66,
+                "question": "What is brand experience measurement?",
+                "options": {
+                    "A": "Measuring brand encounters",
+                    "B": "Quantifying the quality of customer interactions with the brand",
+                    "C": "Measuring brand meetings",
+                    "D": "Measuring brand contact"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 67,
+                "question": "What is brand touchpoint measurement?",
+                "options": {
+                    "A": "Measuring brand contact points",
+                    "B": "Quantifying the effectiveness of brand touchpoints",
+                    "C": "Measuring brand interaction points",
+                    "D": "Measuring brand meeting points"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 68,
+                "question": "What is brand messaging measurement?",
+                "options": {
+                    "A": "Measuring brand communication",
+                    "B": "Quantifying the effectiveness of brand messaging",
+                    "C": "Measuring brand advertising",
+                    "D": "Measuring brand promotion"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 69,
+                "question": "What is brand tone measurement?",
+                "options": {
+                    "A": "Measuring brand voice",
+                    "B": "Quantifying the emotional quality of brand communication",
+                    "C": "Measuring brand sound",
+                    "D": "Measuring brand music"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 70,
+                "question": "What is brand voice measurement?",
+                "options": {
+                    "A": "Measuring brand speaking",
+                    "B": "Quantifying the personality of brand communication",
+                    "C": "Measuring brand talking",
+                    "D": "Measuring brand speech"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 71,
+                "question": "What is brand language measurement?",
+                "options": {
+                    "A": "Measuring brand words",
+                    "B": "Quantifying the effectiveness of brand language",
+                    "C": "Measuring brand vocabulary",
+                    "D": "Measuring brand terminology"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 72,
+                "question": "What is brand positioning measurement?",
+                "options": {
+                    "A": "Measuring brand placement",
+                    "B": "Quantifying the effectiveness of brand positioning",
+                    "C": "Measuring brand location",
+                    "D": "Measuring brand position"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 73,
+                "question": "What is brand differentiation measurement?",
+                "options": {
+                    "A": "Measuring brand differences",
+                    "B": "Quantifying how well the brand stands out from competitors",
+                    "C": "Measuring brand uniqueness",
+                    "D": "Measuring brand distinction"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 74,
+                "question": "What is brand value measurement?",
+                "options": {
+                    "A": "Measuring brand worth",
+                    "B": "Quantifying the value customers place on the brand",
+                    "C": "Measuring brand price",
+                    "D": "Measuring brand cost"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 75,
+                "question": "What is brand quality measurement?",
+                "options": {
+                    "A": "Measuring brand excellence",
+                    "B": "Quantifying the perceived quality of the brand",
+                    "C": "Measuring brand standard",
+                    "D": "Measuring brand grade"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 76,
+                "question": "What is brand reliability measurement?",
+                "options": {
+                    "A": "Measuring brand dependability",
+                    "B": "Quantifying how reliable customers find the brand",
+                    "C": "Measuring brand trustworthiness",
+                    "D": "Measuring brand consistency"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 77,
+                "question": "What is brand trust measurement?",
+                "options": {
+                    "A": "Measuring brand confidence",
+                    "B": "Quantifying how much customers trust the brand",
+                    "C": "Measuring brand faith",
+                    "D": "Measuring brand belief"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 78,
+                "question": "What is brand credibility measurement?",
+                "options": {
+                    "A": "Measuring brand believability",
+                    "B": "Quantifying how credible customers find the brand",
+                    "C": "Measuring brand authenticity",
+                    "D": "Measuring brand honesty"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 79,
+                "question": "What is brand authenticity measurement?",
+                "options": {
+                    "A": "Measuring brand genuineness",
+                    "B": "Quantifying how authentic customers perceive the brand",
+                    "C": "Measuring brand realness",
+                    "D": "Measuring brand truthfulness"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 80,
+                "question": "What is brand transparency measurement?",
+                "options": {
+                    "A": "Measuring brand openness",
+                    "B": "Quantifying how transparent customers find the brand",
+                    "C": "Measuring brand clarity",
+                    "D": "Measuring brand honesty"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 81,
+                "question": "What is brand responsibility measurement?",
+                "options": {
+                    "A": "Measuring brand duty",
+                    "B": "Quantifying how responsible customers perceive the brand",
+                    "C": "Measuring brand obligation",
+                    "D": "Measuring brand accountability"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 82,
+                "question": "What is brand sustainability measurement?",
+                "options": {
+                    "A": "Measuring brand endurance",
+                    "B": "Quantifying how sustainable customers perceive the brand",
+                    "C": "Measuring brand durability",
+                    "D": "Measuring brand longevity"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 83,
+                "question": "What is brand innovation measurement?",
+                "options": {
+                    "A": "Measuring brand creativity",
+                    "B": "Quantifying how innovative customers perceive the brand",
+                    "C": "Measuring brand originality",
+                    "D": "Measuring brand novelty"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 84,
+                "question": "What is brand leadership measurement?",
+                "options": {
+                    "A": "Measuring brand guidance",
+                    "B": "Quantifying how much of a leader customers perceive the brand",
+                    "C": "Measuring brand direction",
+                    "D": "Measuring brand management"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 85,
+                "question": "What is brand expertise measurement?",
+                "options": {
+                    "A": "Measuring brand knowledge",
+                    "B": "Quantifying how expert customers perceive the brand",
+                    "C": "Measuring brand skill",
+                    "D": "Measuring brand competence"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 86,
+                "question": "What is brand authority measurement?",
+                "options": {
+                    "A": "Measuring brand power",
+                    "B": "Quantifying how authoritative customers perceive the brand",
+                    "C": "Measuring brand control",
+                    "D": "Measuring brand influence"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 87,
+                "question": "What is brand reputation measurement?",
+                "options": {
+                    "A": "Measuring brand standing",
+                    "B": "Quantifying the overall reputation of the brand",
+                    "C": "Measuring brand status",
+                    "D": "Measuring brand position"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 88,
+                "question": "What is brand image measurement?",
+                "options": {
+                    "A": "Measuring brand appearance",
+                    "B": "Quantifying the image customers have of the brand",
+                    "C": "Measuring brand look",
+                    "D": "Measuring brand visual"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 89,
+                "question": "What is brand personality measurement?",
+                "options": {
+                    "A": "Measuring brand character",
+                    "B": "Quantifying the personality traits customers associate with the brand",
+                    "C": "Measuring brand nature",
+                    "D": "Measuring brand temperament"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 90,
+                "question": "What is brand attitude measurement?",
+                "options": {
+                    "A": "Measuring brand feeling",
+                    "B": "Quantifying customers' overall attitude toward the brand",
+                    "C": "Measuring brand opinion",
+                    "D": "Measuring brand view"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 91,
+                "question": "What is brand emotion measurement?",
+                "options": {
+                    "A": "Measuring brand feeling",
+                    "B": "Quantifying the emotional response customers have to the brand",
+                    "C": "Measuring brand sentiment",
+                    "D": "Measuring brand mood"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 92,
+                "question": "What is brand connection measurement?",
+                "options": {
+                    "A": "Measuring brand relationship",
+                    "B": "Quantifying the emotional connection customers have with the brand",
+                    "C": "Measuring brand bond",
+                    "D": "Measuring brand link"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 93,
+                "question": "What is brand relationship measurement?",
+                "options": {
+                    "A": "Measuring brand connection",
+                    "B": "Quantifying the strength of customer relationship with the brand",
+                    "C": "Measuring brand bond",
+                    "D": "Measuring brand link"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 94,
+                "question": "What is brand intimacy measurement?",
+                "options": {
+                    "A": "Measuring brand closeness",
+                    "B": "Quantifying the level of intimacy customers feel with the brand",
+                    "C": "Measuring brand familiarity",
+                    "D": "Measuring brand closeness"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 95,
+                "question": "What is brand love measurement?",
+                "options": {
+                    "A": "Measuring brand affection",
+                    "B": "Quantifying the level of love customers have for the brand",
+                    "C": "Measuring brand passion",
+                    "D": "Measuring brand fondness"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 96,
+                "question": "What is brand passion measurement?",
+                "options": {
+                    "A": "Measuring brand enthusiasm",
+                    "B": "Quantifying the level of passion customers have for the brand",
+                    "C": "Measuring brand excitement",
+                    "D": "Measuring brand zeal"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 97,
+                "question": "What is brand excitement measurement?",
+                "options": {
+                    "A": "Measuring brand thrill",
+                    "B": "Quantifying the level of excitement customers have for the brand",
+                    "C": "Measuring brand enthusiasm",
+                    "D": "Measuring brand energy"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 98,
+                "question": "What is brand enthusiasm measurement?",
+                "options": {
+                    "A": "Measuring brand eagerness",
+                    "B": "Quantifying the level of enthusiasm customers have for the brand",
+                    "C": "Measuring brand excitement",
+                    "D": "Measuring brand zeal"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 99,
+                "question": "What is brand energy measurement?",
+                "options": {
+                    "A": "Measuring brand power",
+                    "B": "Quantifying the level of energy customers associate with the brand",
+                    "C": "Measuring brand force",
+                    "D": "Measuring brand strength"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 100,
+                "question": "What is brand vitality measurement?",
+                "options": {
+                    "A": "Measuring brand life",
+                    "B": "Quantifying the level of vitality customers associate with the brand",
+                    "C": "Measuring brand energy",
+                    "D": "Measuring brand vigor"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 101,
+                "question": "What is the primary goal of market research?",
+                "options": {
+                    "A": "To increase sales immediately",
+                    "B": "To gather information about customers, competitors, and market conditions",
+                    "C": "To reduce marketing costs",
+                    "D": "To copy competitor strategies"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 102,
+                "question": "Which of the following is a type of market research?",
+                "options": {
+                    "A": "Financial auditing",
+                    "B": "Primary and secondary research",
+                    "C": "Employee training",
+                    "D": "Product manufacturing"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 103,
+                "question": "What is primary research?",
+                "options": {
+                    "A": "Research done by primary employees",
+                    "B": "Original research conducted directly with target audience",
+                    "C": "Research from primary sources",
+                    "D": "First-time research"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 104,
+                "question": "What is secondary research?",
+                "options": {
+                    "A": "Second-hand research",
+                    "B": "Using existing data and research from other sources",
+                    "C": "Backup research",
+                    "D": "Alternative research"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 105,
+                "question": "What is a target market?",
+                "options": {
+                    "A": "A market with targets",
+                    "B": "A specific group of customers most likely to buy your product",
+                    "C": "A market with goals",
+                    "D": "A competitive market"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 106,
+                "question": "What is market segmentation?",
+                "options": {
+                    "A": "Dividing the market physically",
+                    "B": "Dividing a market into smaller groups with similar characteristics",
+                    "C": "Splitting market share",
+                    "D": "Creating market divisions"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 107,
+                "question": "What is demographic segmentation?",
+                "options": {
+                    "A": "Segmenting by population",
+                    "B": "Dividing market by age, gender, income, education, etc.",
+                    "C": "Segmenting by geography",
+                    "D": "Dividing by behavior"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 108,
+                "question": "What is psychographic segmentation?",
+                "options": {
+                    "A": "Segmenting by psychology",
+                    "B": "Dividing market by lifestyle, values, personality, interests",
+                    "C": "Segmenting by mental health",
+                    "D": "Dividing by attitude"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 109,
+                "question": "What is behavioral segmentation?",
+                "options": {
+                    "A": "Segmenting by actions",
+                    "B": "Dividing market by purchasing behavior, usage patterns, brand loyalty",
+                    "C": "Segmenting by conduct",
+                    "D": "Dividing by performance"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 110,
+                "question": "What is geographic segmentation?",
+                "options": {
+                    "A": "Segmenting by location",
+                    "B": "Dividing market by region, city, climate, population density",
+                    "C": "Segmenting by area",
+                    "D": "Dividing by territory"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 111,
+                "question": "What is a customer persona?",
+                "options": {
+                    "A": "A customer's personality",
+                    "B": "A detailed profile of your ideal customer",
+                    "C": "A customer's character",
+                    "D": "A customer's identity"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 112,
+                "question": "What is competitive analysis?",
+                "options": {
+                    "A": "Analyzing competition",
+                    "B": "Evaluating competitors' strengths, weaknesses, and strategies",
+                    "C": "Comparing competitors",
+                    "D": "Studying rivals"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 113,
+                "question": "What is a SWOT analysis?",
+                "options": {
+                    "A": "A strategic analysis tool",
+                    "B": "Analysis of Strengths, Weaknesses, Opportunities, Threats",
+                    "C": "A business analysis",
+                    "D": "A market analysis"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 114,
+                "question": "What is market size?",
+                "options": {
+                    "A": "The physical size of a market",
+                    "B": "The total number of potential customers in a market",
+                    "C": "The market's dimensions",
+                    "D": "The market's volume"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 115,
+                "question": "What is market share?",
+                "options": {
+                    "A": "Sharing the market",
+                    "B": "The percentage of total market sales your company captures",
+                    "C": "Dividing the market",
+                    "D": "Market distribution"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 116,
+                "question": "What is market penetration?",
+                "options": {
+                    "A": "Entering the market",
+                    "B": "The percentage of potential customers who buy your product",
+                    "C": "Market entry",
+                    "D": "Market access"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 117,
+                "question": "What is market positioning?",
+                "options": {
+                    "A": "Positioning in the market",
+                    "B": "How your product is perceived relative to competitors",
+                    "C": "Market placement",
+                    "D": "Market location"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 118,
+                "question": "What is a unique selling proposition (USP)?",
+                "options": {
+                    "A": "A unique product",
+                    "B": "What makes your product different and better than competitors",
+                    "C": "A special offer",
+                    "D": "A unique feature"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 119,
+                "question": "What is product differentiation?",
+                "options": {
+                    "A": "Making products different",
+                    "B": "Making your product stand out from competitors",
+                    "C": "Product variation",
+                    "D": "Product distinction"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 120,
+                "question": "What is price positioning?",
+                "options": {
+                    "A": "Positioning prices",
+                    "B": "How your product's price compares to competitors",
+                    "C": "Price placement",
+                    "D": "Price location"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 121,
+                "question": "What is value proposition?",
+                "options": {
+                    "A": "A valuable proposition",
+                    "B": "The value customers get from your product",
+                    "C": "A price proposition",
+                    "D": "A benefit proposition"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 122,
+                "question": "What is customer value?",
+                "options": {
+                    "A": "Customer worth",
+                    "B": "The benefits customers receive minus the cost",
+                    "C": "Customer price",
+                    "D": "Customer benefit"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 123,
+                "question": "What is customer lifetime value (CLV)?",
+                "options": {
+                    "A": "Customer's total worth",
+                    "B": "Total revenue a customer generates over their relationship",
+                    "C": "Customer's value",
+                    "D": "Customer's worth"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 124,
+                "question": "What is customer acquisition cost (CAC)?",
+                "options": {
+                    "A": "Cost to acquire customers",
+                    "B": "Total cost to acquire a new customer",
+                    "C": "Customer cost",
+                    "D": "Acquisition expense"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 125,
+                "question": "What is customer retention?",
+                "options": {
+                    "A": "Keeping customers",
+                    "B": "Keeping existing customers from leaving",
+                    "C": "Customer loyalty",
+                    "D": "Customer maintenance"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 126,
+                "question": "What is customer satisfaction?",
+                "options": {
+                    "A": "Customer happiness",
+                    "B": "How satisfied customers are with your product/service",
+                    "C": "Customer contentment",
+                    "D": "Customer pleasure"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 127,
+                "question": "What is customer feedback?",
+                "options": {
+                    "A": "Customer response",
+                    "B": "Information from customers about their experience",
+                    "C": "Customer opinion",
+                    "D": "Customer review"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 128,
+                "question": "What is customer service?",
+                "options": {
+                    "A": "Serving customers",
+                    "B": "Support and assistance provided to customers",
+                    "C": "Customer help",
+                    "D": "Customer support"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 129,
+                "question": "What is customer experience (CX)?",
+                "options": {
+                    "A": "Customer journey",
+                    "B": "Overall experience customers have with your brand",
+                    "C": "Customer interaction",
+                    "D": "Customer encounter"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 130,
+                "question": "What is customer journey mapping?",
+                "options": {
+                    "A": "Mapping customer routes",
+                    "B": "Visualizing the customer's experience from first contact to purchase",
+                    "C": "Customer path",
+                    "D": "Customer route"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 131,
+                "question": "What is customer touchpoint?",
+                "options": {
+                    "A": "Customer contact",
+                    "B": "Any point where customers interact with your brand",
+                    "C": "Customer meeting",
+                    "D": "Customer contact"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 132,
+                "question": "What is customer onboarding?",
+                "options": {
+                    "A": "Bringing customers on board",
+                    "B": "Process of welcoming and educating new customers",
+                    "C": "Customer introduction",
+                    "D": "Customer welcome"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 133,
+                "question": "What is customer churn?",
+                "options": {
+                    "A": "Customer turnover",
+                    "B": "Rate at which customers stop using your product",
+                    "C": "Customer loss",
+                    "D": "Customer departure"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 134,
+                "question": "What is customer loyalty?",
+                "options": {
+                    "A": "Customer faithfulness",
+                    "B": "Customer's commitment to repeatedly purchase from you",
+                    "C": "Customer devotion",
+                    "D": "Customer allegiance"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 135,
+                "question": "What is customer advocacy?",
+                "options": {
+                    "A": "Customer support",
+                    "B": "When customers actively promote your brand",
+                    "C": "Customer recommendation",
+                    "D": "Customer endorsement"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 136,
+                "question": "What is customer engagement?",
+                "options": {
+                    "A": "Customer involvement",
+                    "B": "Level of interaction customers have with your brand",
+                    "C": "Customer participation",
+                    "D": "Customer interaction"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 137,
+                "question": "What is customer relationship management (CRM)?",
+                "options": {
+                    "A": "Managing customer relationships",
+                    "B": "System for managing customer interactions and data",
+                    "C": "Customer management",
+                    "D": "Relationship management"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 138,
+                "question": "What is customer data?",
+                "options": {
+                    "A": "Customer information",
+                    "B": "Information collected about customers and their behavior",
+                    "C": "Customer details",
+                    "D": "Customer records"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 139,
+                "question": "What is customer analytics?",
+                "options": {
+                    "A": "Customer analysis",
+                    "B": "Analysis of customer data to improve business decisions",
+                    "C": "Customer research",
+                    "D": "Customer study"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 140,
+                "question": "What is customer segmentation?",
+                "options": {
+                    "A": "Dividing customers",
+                    "B": "Grouping customers by similar characteristics",
+                    "C": "Customer division",
+                    "D": "Customer grouping"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 141,
+                "question": "What is customer profiling?",
+                "options": {
+                    "A": "Customer description",
+                    "B": "Creating detailed profiles of customer groups",
+                    "C": "Customer analysis",
+                    "D": "Customer study"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 142,
+                "question": "What is customer behavior analysis?",
+                "options": {
+                    "A": "Analyzing customer actions",
+                    "B": "Studying how customers interact with your brand",
+                    "C": "Customer action study",
+                    "D": "Customer behavior study"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 143,
+                "question": "What is customer preference analysis?",
+                "options": {
+                    "A": "Analyzing customer choices",
+                    "B": "Understanding what customers prefer and why",
+                    "C": "Customer choice study",
+                    "D": "Customer preference study"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 144,
+                "question": "What is customer satisfaction survey?",
+                "options": {
+                    "A": "Customer happiness survey",
+                    "B": "Questionnaire to measure customer satisfaction",
+                    "C": "Customer feedback survey",
+                    "D": "Customer opinion survey"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 145,
+                "question": "What is customer feedback loop?",
+                "options": {
+                    "A": "Customer response cycle",
+                    "B": "Process of collecting and acting on customer feedback",
+                    "C": "Customer input cycle",
+                    "D": "Customer response process"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 146,
+                "question": "What is customer support?",
+                "options": {
+                    "A": "Supporting customers",
+                    "B": "Assistance provided to customers with issues",
+                    "C": "Customer help",
+                    "D": "Customer assistance"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 147,
+                "question": "What is customer success?",
+                "options": {
+                    "A": "Customer achievement",
+                    "B": "Ensuring customers achieve their goals with your product",
+                    "C": "Customer accomplishment",
+                    "D": "Customer victory"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 148,
+                "question": "What is customer onboarding process?",
+                "options": {
+                    "A": "Customer introduction process",
+                    "B": "Structured process to welcome and educate new customers",
+                    "C": "Customer welcome process",
+                    "D": "Customer introduction"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 149,
+                "question": "What is customer activation?",
+                "options": {
+                    "A": "Activating customers",
+                    "B": "Getting customers to start using your product",
+                    "C": "Customer activation",
+                    "D": "Customer engagement"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 150,
+                "question": "What is customer adoption?",
+                "options": {
+                    "A": "Customer acceptance",
+                    "B": "Process of customers accepting and using your product",
+                    "C": "Customer acceptance",
+                    "D": "Customer uptake"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 151,
+                "question": "What is customer education?",
+                "options": {
+                    "A": "Teaching customers",
+                    "B": "Providing information to help customers use your product",
+                    "C": "Customer training",
+                    "D": "Customer instruction"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 152,
+                "question": "What is customer training?",
+                "options": {
+                    "A": "Training customers",
+                    "B": "Teaching customers how to use your product effectively",
+                    "C": "Customer instruction",
+                    "D": "Customer education"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 153,
+                "question": "What is customer documentation?",
+                "options": {
+                    "A": "Customer records",
+                    "B": "Written materials to help customers use your product",
+                    "C": "Customer information",
+                    "D": "Customer guides"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 154,
+                "question": "What is customer self-service?",
+                "options": {
+                    "A": "Customer independence",
+                    "B": "Allowing customers to solve problems themselves",
+                    "C": "Customer autonomy",
+                    "D": "Customer independence"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 155,
+                "question": "What is customer knowledge base?",
+                "options": {
+                    "A": "Customer information",
+                    "B": "Centralized resource of information for customers",
+                    "C": "Customer database",
+                    "D": "Customer information"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 156,
+                "question": "What is customer FAQ?",
+                "options": {
+                    "A": "Customer questions",
+                    "B": "Frequently asked questions and answers for customers",
+                    "C": "Customer queries",
+                    "D": "Customer questions"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 157,
+                "question": "What is customer ticketing system?",
+                "options": {
+                    "A": "Customer ticket system",
+                    "B": "System for tracking and managing customer support requests",
+                    "C": "Customer request system",
+                    "D": "Customer support system"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 158,
+                "question": "What is customer escalation?",
+                "options": {
+                    "A": "Customer promotion",
+                    "B": "Moving customer issues to higher-level support",
+                    "C": "Customer advancement",
+                    "D": "Customer promotion"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 159,
+                "question": "What is customer SLA?",
+                "options": {
+                    "A": "Customer service level",
+                    "B": "Service Level Agreement defining customer service standards",
+                    "C": "Customer agreement",
+                    "D": "Customer contract"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 160,
+                "question": "What is customer response time?",
+                "options": {
+                    "A": "Customer reply time",
+                    "B": "Time it takes to respond to customer inquiries",
+                    "C": "Customer answer time",
+                    "D": "Customer reply time"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 161,
+                "question": "What is customer resolution time?",
+                "options": {
+                    "A": "Customer solution time",
+                    "B": "Time it takes to resolve customer issues",
+                    "C": "Customer fix time",
+                    "D": "Customer solution time"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 162,
+                "question": "What is customer satisfaction score (CSAT)?",
+                "options": {
+                    "A": "Customer happiness score",
+                    "B": "Metric measuring customer satisfaction with service",
+                    "C": "Customer contentment score",
+                    "D": "Customer pleasure score"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 163,
+                "question": "What is Net Promoter Score (NPS)?",
+                "options": {
+                    "A": "Net promoter rating",
+                    "B": "Metric measuring customer loyalty and likelihood to recommend",
+                    "C": "Net promoter score",
+                    "D": "Net promoter rating"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 164,
+                "question": "What is customer effort score (CES)?",
+                "options": {
+                    "A": "Customer work score",
+                    "B": "Metric measuring how easy it is for customers to get help",
+                    "C": "Customer difficulty score",
+                    "D": "Customer work score"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 165,
+                "question": "What is customer sentiment analysis?",
+                "options": {
+                    "A": "Customer feeling analysis",
+                    "B": "Analyzing customer emotions and attitudes",
+                    "C": "Customer emotion study",
+                    "D": "Customer feeling study"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 166,
+                "question": "What is customer voice of customer (VoC)?",
+                "options": {
+                    "A": "Customer voice",
+                    "B": "Systematic approach to capturing customer feedback and insights",
+                    "C": "Customer opinion",
+                    "D": "Customer voice"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 167,
+                "question": "What is customer journey analytics?",
+                "options": {
+                    "A": "Customer path analysis",
+                    "B": "Analyzing customer interactions across touchpoints",
+                    "C": "Customer route analysis",
+                    "D": "Customer path study"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 168,
+                "question": "What is customer behavior tracking?",
+                "options": {
+                    "A": "Tracking customer actions",
+                    "B": "Monitoring how customers interact with your brand",
+                    "C": "Customer action monitoring",
+                    "D": "Customer behavior monitoring"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 169,
+                "question": "What is customer personalization?",
+                "options": {
+                    "A": "Customer customization",
+                    "B": "Tailoring experiences to individual customer preferences",
+                    "C": "Customer individualization",
+                    "D": "Customer customization"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 170,
+                "question": "What is customer targeting?",
+                "options": {
+                    "A": "Targeting customers",
+                    "B": "Focusing marketing efforts on specific customer groups",
+                    "C": "Customer focus",
+                    "D": "Customer targeting"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 171,
+                "question": "What is customer acquisition strategy?",
+                "options": {
+                    "A": "Customer acquisition plan",
+                    "B": "Plan to attract and convert new customers",
+                    "C": "Customer acquisition plan",
+                    "D": "Customer acquisition strategy"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 172,
+                "question": "What is customer retention strategy?",
+                "options": {
+                    "A": "Customer retention plan",
+                    "B": "Plan to keep existing customers from leaving",
+                    "C": "Customer retention plan",
+                    "D": "Customer retention strategy"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 173,
+                "question": "What is customer loyalty program?",
+                "options": {
+                    "A": "Customer loyalty system",
+                    "B": "Program to reward and retain loyal customers",
+                    "C": "Customer loyalty system",
+                    "D": "Customer loyalty program"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 174,
+                "question": "What is customer referral program?",
+                "options": {
+                    "A": "Customer referral system",
+                    "B": "Program encouraging customers to refer others",
+                    "C": "Customer referral system",
+                    "D": "Customer referral program"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 175,
+                "question": "What is customer reward program?",
+                "options": {
+                    "A": "Customer reward system",
+                    "B": "Program offering rewards for customer actions",
+                    "C": "Customer reward system",
+                    "D": "Customer reward program"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 176,
+                "question": "What is customer gamification?",
+                "options": {
+                    "A": "Customer gaming",
+                    "B": "Using game elements to engage customers",
+                    "C": "Customer gaming",
+                    "D": "Customer gamification"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 177,
+                "question": "What is customer community?",
+                "options": {
+                    "A": "Customer group",
+                    "B": "Platform where customers can connect and share",
+                    "C": "Customer group",
+                    "D": "Customer community"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 178,
+                "question": "What is customer forum?",
+                "options": {
+                    "A": "Customer discussion",
+                    "B": "Online platform for customer discussions and support",
+                    "C": "Customer discussion",
+                    "D": "Customer forum"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 179,
+                "question": "What is customer user group?",
+                "options": {
+                    "A": "Customer group",
+                    "B": "Group of customers who meet to share experiences",
+                    "C": "Customer group",
+                    "D": "Customer user group"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 180,
+                "question": "What is customer beta testing?",
+                "options": {
+                    "A": "Customer testing",
+                    "B": "Testing new features with select customers",
+                    "C": "Customer testing",
+                    "D": "Customer beta testing"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 181,
+                "question": "What is customer feedback session?",
+                "options": {
+                    "A": "Customer feedback meeting",
+                    "B": "Structured session to gather customer input",
+                    "C": "Customer feedback meeting",
+                    "D": "Customer feedback session"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 182,
+                "question": "What is customer interview?",
+                "options": {
+                    "A": "Customer conversation",
+                    "B": "One-on-one conversation to understand customer needs",
+                    "C": "Customer conversation",
+                    "D": "Customer interview"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 183,
+                "question": "What is customer focus group?",
+                "options": {
+                    "A": "Customer group",
+                    "B": "Small group discussion to gather customer insights",
+                    "C": "Customer group",
+                    "D": "Customer focus group"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 184,
+                "question": "What is customer survey?",
+                "options": {
+                    "A": "Customer questionnaire",
+                    "B": "Structured questionnaire to gather customer feedback",
+                    "C": "Customer questionnaire",
+                    "D": "Customer survey"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 185,
+                "question": "What is customer poll?",
+                "options": {
+                    "A": "Customer vote",
+                    "B": "Quick question to gather customer opinions",
+                    "C": "Customer vote",
+                    "D": "Customer poll"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 186,
+                "question": "What is customer rating?",
+                "options": {
+                    "A": "Customer score",
+                    "B": "Numerical evaluation of customer satisfaction",
+                    "C": "Customer score",
+                    "D": "Customer rating"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 187,
+                "question": "What is customer review?",
+                "options": {
+                    "A": "Customer evaluation",
+                    "B": "Written feedback from customers about their experience",
+                    "C": "Customer evaluation",
+                    "D": "Customer review"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 188,
+                "question": "What is customer testimonial?",
+                "options": {
+                    "A": "Customer statement",
+                    "B": "Positive feedback from satisfied customers",
+                    "C": "Customer statement",
+                    "D": "Customer testimonial"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 189,
+                "question": "What is customer case study?",
+                "options": {
+                    "A": "Customer example",
+                    "B": "Detailed story of how a customer used your product",
+                    "C": "Customer example",
+                    "D": "Customer case study"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 190,
+                "question": "What is customer success story?",
+                "options": {
+                    "A": "Customer achievement",
+                    "B": "Story of how your product helped a customer succeed",
+                    "C": "Customer achievement",
+                    "D": "Customer success story"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 191,
+                "question": "What is customer ROI?",
+                "options": {
+                    "A": "Customer return",
+                    "B": "Return on investment for customer acquisition and retention",
+                    "C": "Customer return",
+                    "D": "Customer ROI"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 192,
+                "question": "What is customer LTV?",
+                "options": {
+                    "A": "Customer lifetime value",
+                    "B": "Total revenue a customer generates over their relationship",
+                    "C": "Customer lifetime value",
+                    "D": "Customer LTV"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 193,
+                "question": "What is customer CAC?",
+                "options": {
+                    "A": "Customer acquisition cost",
+                    "B": "Total cost to acquire a new customer",
+                    "C": "Customer acquisition cost",
+                    "D": "Customer CAC"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 194,
+                "question": "What is customer churn rate?",
+                "options": {
+                    "A": "Customer loss rate",
+                    "B": "Percentage of customers who stop using your product",
+                    "C": "Customer loss rate",
+                    "D": "Customer churn rate"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 195,
+                "question": "What is customer retention rate?",
+                "options": {
+                    "A": "Customer keeping rate",
+                    "B": "Percentage of customers who continue using your product",
+                    "C": "Customer keeping rate",
+                    "D": "Customer retention rate"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 196,
+                "question": "What is customer conversion rate?",
+                "options": {
+                    "A": "Customer change rate",
+                    "B": "Percentage of prospects who become customers",
+                    "C": "Customer change rate",
+                    "D": "Customer conversion rate"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 197,
+                "question": "What is customer engagement rate?",
+                "options": {
+                    "A": "Customer involvement rate",
+                    "B": "Percentage of customers actively interacting with your brand",
+                    "C": "Customer involvement rate",
+                    "D": "Customer engagement rate"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 198,
+                "question": "What is customer response rate?",
+                "options": {
+                    "A": "Customer reply rate",
+                    "B": "Percentage of customers who respond to communications",
+                    "C": "Customer reply rate",
+                    "D": "Customer response rate"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 199,
+                "question": "What is customer open rate?",
+                "options": {
+                    "A": "Customer opening rate",
+                    "B": "Percentage of customers who open your emails",
+                    "C": "Customer opening rate",
+                    "D": "Customer open rate"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 200,
+                "question": "What is customer click-through rate (CTR)?",
+                "options": {
+                    "A": "Customer click rate",
+                    "B": "Percentage of customers who click on links in communications",
+                    "C": "Customer click rate",
+                    "D": "Customer click-through rate"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 201,
+                "question": "What is entrepreneurship?",
+                "options": {
+                    "A": "Starting a business",
+                    "B": "The process of creating, developing, and managing a business venture",
+                    "C": "Making money",
+                    "D": "Running a company"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 202,
+                "question": "What is an entrepreneur?",
+                "options": {
+                    "A": "A business owner",
+                    "B": "A person who starts and manages a business venture",
+                    "C": "A manager",
+                    "D": "A CEO"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 203,
+                "question": "What is innovation in entrepreneurship?",
+                "options": {
+                    "A": "Creating new products",
+                    "B": "Introducing new ideas, methods, or products",
+                    "C": "Improving existing products",
+                    "D": "Marketing strategies"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 204,
+                "question": "What is a startup?",
+                "options": {
+                    "A": "A new company",
+                    "B": "A newly established business with high growth potential",
+                    "C": "A small business",
+                    "D": "A company"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 205,
+                "question": "What is a business model?",
+                "options": {
+                    "A": "A business plan",
+                    "B": "How a company creates, delivers, and captures value",
+                    "C": "A business strategy",
+                    "D": "A business structure"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 206,
+                "question": "What is a value proposition?",
+                "options": {
+                    "A": "A value offer",
+                    "B": "The unique value a product or service provides to customers",
+                    "C": "A price offer",
+                    "D": "A product benefit"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 207,
+                "question": "What is market opportunity?",
+                "options": {
+                    "A": "A market chance",
+                    "B": "A favorable set of circumstances for creating a new business",
+                    "C": "A market gap",
+                    "D": "A business opportunity"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 208,
+                "question": "What is competitive advantage?",
+                "options": {
+                    "A": "Competitive edge",
+                    "B": "A unique advantage over competitors",
+                    "C": "Competitive strength",
+                    "D": "Competitive benefit"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 209,
+                "question": "What is a business plan?",
+                "options": {
+                    "A": "A business document",
+                    "B": "A written document describing business strategy and financial projections",
+                    "C": "A business proposal",
+                    "D": "A business outline"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 210,
+                "question": "What is funding in entrepreneurship?",
+                "options": {
+                    "A": "Money for business",
+                    "B": "Financial resources to start or grow a business",
+                    "C": "Business investment",
+                    "D": "Business capital"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 211,
+                "question": "What is bootstrapping?",
+                "options": {
+                    "A": "Starting with nothing",
+                    "B": "Starting a business with minimal external funding",
+                    "C": "Self-funding",
+                    "D": "Personal investment"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 212,
+                "question": "What is venture capital?",
+                "options": {
+                    "A": "Venture funding",
+                    "B": "Investment in high-growth potential startups",
+                    "C": "Business investment",
+                    "D": "Startup funding"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 213,
+                "question": "What is angel investment?",
+                "options": {
+                    "A": "Angel funding",
+                    "B": "Investment from wealthy individuals in early-stage companies",
+                    "C": "Personal investment",
+                    "D": "Individual funding"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 214,
+                "question": "What is crowdfunding?",
+                "options": {
+                    "A": "Crowd funding",
+                    "B": "Raising funds from many people via online platforms",
+                    "C": "Public funding",
+                    "D": "Mass funding"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 215,
+                "question": "What is a pitch deck?",
+                "options": {
+                    "A": "A presentation",
+                    "B": "A brief presentation to investors about your business",
+                    "C": "A business presentation",
+                    "D": "An investor presentation"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 216,
+                "question": "What is scalability?",
+                "options": {
+                    "A": "Ability to scale",
+                    "B": "Ability to grow without proportional increase in costs",
+                    "C": "Growth potential",
+                    "D": "Expansion ability"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 217,
+                "question": "What is a minimum viable product (MVP)?",
+                "options": {
+                    "A": "A basic product",
+                    "B": "A product with minimum features to test market demand",
+                    "C": "A simple product",
+                    "D": "A test product"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 218,
+                "question": "What is product-market fit?",
+                "options": {
+                    "A": "Product market match",
+                    "B": "When a product satisfies strong market demand",
+                    "C": "Market fit",
+                    "D": "Product fit"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 219,
+                "question": "What is customer validation?",
+                "options": {
+                    "A": "Customer verification",
+                    "B": "Confirming that customers want your product",
+                    "C": "Customer approval",
+                    "D": "Customer confirmation"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 220,
+                "question": "What is a pivot?",
+                "options": {
+                    "A": "A change",
+                    "B": "A fundamental change in business strategy",
+                    "C": "A strategy change",
+                    "D": "A business change"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 221,
+                "question": "What is lean startup methodology?",
+                "options": {
+                    "A": "Lean methodology",
+                    "B": "A methodology for developing businesses and products efficiently",
+                    "C": "Startup methodology",
+                    "D": "Business methodology"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 222,
+                "question": "What is rapid prototyping?",
+                "options": {
+                    "A": "Quick prototyping",
+                    "B": "Quickly creating and testing product versions",
+                    "C": "Fast prototyping",
+                    "D": "Quick testing"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 223,
+                "question": "What is iteration?",
+                "options": {
+                    "A": "Repeating",
+                    "B": "Repeatedly improving a product based on feedback",
+                    "C": "Repeating process",
+                    "D": "Continuous improvement"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 224,
+                "question": "What is a unicorn startup?",
+                "options": {
+                    "A": "A mythical startup",
+                    "B": "A startup valued at over $1 billion",
+                    "C": "A rare startup",
+                    "D": "A successful startup"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 225,
+                "question": "What is an exit strategy?",
+                "options": {
+                    "A": "Exit plan",
+                    "B": "Plan for how founders will leave the business",
+                    "C": "Exit plan",
+                    "D": "Departure strategy"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 226,
+                "question": "What is an IPO?",
+                "options": {
+                    "A": "Initial public offering",
+                    "B": "First sale of stock to the public",
+                    "C": "Public offering",
+                    "D": "Stock offering"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 227,
+                "question": "What is acquisition?",
+                "options": {
+                    "A": "Buying",
+                    "B": "One company buying another company",
+                    "C": "Company purchase",
+                    "D": "Business purchase"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 228,
+                "question": "What is a merger?",
+                "options": {
+                    "A": "Combining",
+                    "B": "Two companies combining to form one",
+                    "C": "Company combination",
+                    "D": "Business combination"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 229,
+                "question": "What is intellectual property?",
+                "options": {
+                    "A": "Intellectual assets",
+                    "B": "Creations of the mind that can be legally protected",
+                    "C": "Intellectual assets",
+                    "D": "Creative property"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 230,
+                "question": "What is a patent?",
+                "options": {
+                    "A": "A legal document",
+                    "B": "Exclusive rights to an invention for a limited time",
+                    "C": "A legal right",
+                    "D": "An invention right"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 231,
+                "question": "What is a trademark?",
+                "options": {
+                    "A": "A brand mark",
+                    "B": "A symbol, word, or phrase legally registered for exclusive use",
+                    "C": "A brand symbol",
+                    "D": "A brand mark"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 232,
+                "question": "What is copyright?",
+                "options": {
+                    "A": "Copy right",
+                    "B": "Exclusive rights to original creative works",
+                    "C": "Creative rights",
+                    "D": "Original rights"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 233,
+                "question": "What is a trade secret?",
+                "options": {
+                    "A": "A secret",
+                    "B": "Confidential business information that provides competitive advantage",
+                    "C": "A business secret",
+                    "D": "A company secret"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 234,
+                "question": "What is due diligence?",
+                "options": {
+                    "A": "Careful research",
+                    "B": "Thorough investigation before making a business decision",
+                    "C": "Careful investigation",
+                    "D": "Thorough research"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 235,
+                "question": "What is a term sheet?",
+                "options": {
+                    "A": "A document",
+                    "B": "A non-binding agreement outlining terms of investment",
+                    "C": "A term document",
+                    "D": "A term agreement"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 236,
+                "question": "What is equity?",
+                "options": {
+                    "A": "Ownership",
+                    "B": "Ownership interest in a company",
+                    "C": "Company ownership",
+                    "D": "Business ownership"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 237,
+                "question": "What is dilution?",
+                "options": {
+                    "A": "Reducing",
+                    "B": "Reduction in ownership percentage when new shares are issued",
+                    "C": "Ownership reduction",
+                    "D": "Share reduction"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 238,
+                "question": "What is a board of directors?",
+                "options": {
+                    "A": "A board",
+                    "B": "Group elected to represent shareholders and oversee company",
+                    "C": "A company board",
+                    "D": "A business board"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 239,
+                "question": "What is corporate governance?",
+                "options": {
+                    "A": "Corporate management",
+                    "B": "System of rules and practices for company management",
+                    "C": "Corporate rules",
+                    "D": "Company governance"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 240,
+                "question": "What is compliance?",
+                "options": {
+                    "A": "Following rules",
+                    "B": "Adhering to laws, regulations, and standards",
+                    "C": "Rule following",
+                    "D": "Regulation following"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 241,
+                "question": "What is risk management?",
+                "options": {
+                    "A": "Risk control",
+                    "B": "Identifying and minimizing potential business risks",
+                    "C": "Risk control",
+                    "D": "Risk handling"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 242,
+                "question": "What is liability?",
+                "options": {
+                    "A": "Responsibility",
+                    "B": "Legal responsibility for debts or obligations",
+                    "C": "Legal responsibility",
+                    "D": "Business responsibility"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 243,
+                "question": "What is insurance?",
+                "options": {
+                    "A": "Protection",
+                    "B": "Financial protection against losses",
+                    "C": "Risk protection",
+                    "D": "Loss protection"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 244,
+                "question": "What is a contract?",
+                "options": {
+                    "A": "An agreement",
+                    "B": "Legally binding agreement between parties",
+                    "C": "A legal agreement",
+                    "D": "A business agreement"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 245,
+                "question": "What is negotiation?",
+                "options": {
+                    "A": "Bargaining",
+                    "B": "Process of reaching agreement between parties",
+                    "C": "Bargaining process",
+                    "D": "Agreement process"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 246,
+                "question": "What is a partnership?",
+                "options": {
+                    "A": "A collaboration",
+                    "B": "Business relationship between two or more parties",
+                    "C": "A business partnership",
+                    "D": "A collaboration"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 247,
+                "question": "What is a joint venture?",
+                "options": {
+                    "A": "Joint business",
+                    "B": "Business arrangement between two or more parties",
+                    "C": "Joint business",
+                    "D": "Combined venture"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 248,
+                "question": "What is franchising?",
+                "options": {
+                    "A": "Franchise business",
+                    "B": "Licensing business model to independent operators",
+                    "C": "Franchise model",
+                    "D": "License business"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 249,
+                "question": "What is licensing?",
+                "options": {
+                    "A": "License granting",
+                    "B": "Granting permission to use intellectual property",
+                    "C": "License granting",
+                    "D": "Permission granting"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 250,
+                "question": "What is outsourcing?",
+                "options": {
+                    "A": "External work",
+                    "B": "Hiring external companies to perform business functions",
+                    "C": "External hiring",
+                    "D": "External services"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 251,
+                "question": "What is supply chain management?",
+                "options": {
+                    "A": "Supply management",
+                    "B": "Managing flow of goods and services from supplier to customer",
+                    "C": "Supply management",
+                    "D": "Chain management"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 252,
+                "question": "What is inventory management?",
+                "options": {
+                    "A": "Inventory control",
+                    "B": "Managing stock levels and product flow",
+                    "C": "Inventory control",
+                    "D": "Stock management"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 253,
+                "question": "What is quality control?",
+                "options": {
+                    "A": "Quality management",
+                    "B": "Ensuring products meet quality standards",
+                    "C": "Quality management",
+                    "D": "Quality assurance"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 254,
+                "question": "What is total quality management (TQM)?",
+                "options": {
+                    "A": "Quality management",
+                    "B": "Management approach focused on quality improvement",
+                    "C": "Quality management",
+                    "D": "Quality approach"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 255,
+                "question": "What is Six Sigma?",
+                "options": {
+                    "A": "Quality method",
+                    "B": "Methodology for improving quality and reducing defects",
+                    "C": "Quality method",
+                    "D": "Quality methodology"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 256,
+                "question": "What is lean manufacturing?",
+                "options": {
+                    "A": "Lean production",
+                    "B": "Production methodology focused on eliminating waste",
+                    "C": "Lean production",
+                    "D": "Efficient manufacturing"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 257,
+                "question": "What is just-in-time (JIT)?",
+                "options": {
+                    "A": "Just in time",
+                    "B": "Production system that produces items as needed",
+                    "C": "Just in time",
+                    "D": "Timely production"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 258,
+                "question": "What is kaizen?",
+                "options": {
+                    "A": "Continuous improvement",
+                    "B": "Japanese philosophy of continuous improvement",
+                    "C": "Continuous improvement",
+                    "D": "Improvement philosophy"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 259,
+                "question": "What is benchmarking?",
+                "options": {
+                    "A": "Performance comparison",
+                    "B": "Comparing performance against industry standards",
+                    "C": "Performance comparison",
+                    "D": "Standard comparison"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 260,
+                "question": "What is best practice?",
+                "options": {
+                    "A": "Best method",
+                    "B": "Method or technique that delivers superior results",
+                    "C": "Best method",
+                    "D": "Superior method"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 261,
+                "question": "What is continuous improvement?",
+                "options": {
+                    "A": "Ongoing improvement",
+                    "B": "Ongoing effort to improve products, services, or processes",
+                    "C": "Ongoing improvement",
+                    "D": "Continuous enhancement"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 262,
+                "question": "What is process improvement?",
+                "options": {
+                    "A": "Process enhancement",
+                    "B": "Making business processes more efficient and effective",
+                    "C": "Process enhancement",
+                    "D": "Process optimization"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 263,
+                "question": "What is workflow optimization?",
+                "options": {
+                    "A": "Workflow improvement",
+                    "B": "Improving the efficiency of work processes",
+                    "C": "Workflow improvement",
+                    "D": "Process optimization"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 264,
+                "question": "What is automation?",
+                "options": {
+                    "A": "Automatic process",
+                    "B": "Using technology to perform tasks without human intervention",
+                    "C": "Automatic process",
+                    "D": "Technology automation"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 265,
+                "question": "What is digital transformation?",
+                "options": {
+                    "A": "Digital change",
+                    "B": "Integrating digital technology into all areas of business",
+                    "C": "Digital change",
+                    "D": "Technology integration"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 266,
+                "question": "What is e-commerce?",
+                "options": {
+                    "A": "Electronic commerce",
+                    "B": "Buying and selling goods and services online",
+                    "C": "Electronic commerce",
+                    "D": "Online business"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 267,
+                "question": "What is m-commerce?",
+                "options": {
+                    "A": "Mobile commerce",
+                    "B": "Buying and selling through mobile devices",
+                    "C": "Mobile commerce",
+                    "D": "Mobile business"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 268,
+                "question": "What is social commerce?",
+                "options": {
+                    "A": "Social business",
+                    "B": "Buying and selling through social media platforms",
+                    "C": "Social business",
+                    "D": "Social media commerce"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 269,
+                "question": "What is omnichannel retailing?",
+                "options": {
+                    "A": "Multi-channel retail",
+                    "B": "Providing seamless shopping experience across all channels",
+                    "C": "Multi-channel retail",
+                    "D": "Integrated retail"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 270,
+                "question": "What is dropshipping?",
+                "options": {
+                    "A": "Direct shipping",
+                    "B": "Selling products without holding inventory",
+                    "C": "Direct shipping",
+                    "D": "Inventory-free selling"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 271,
+                "question": "What is subscription business model?",
+                "options": {
+                    "A": "Subscription model",
+                    "B": "Business model based on recurring payments",
+                    "C": "Subscription model",
+                    "D": "Recurring model"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 272,
+                "question": "What is freemium model?",
+                "options": {
+                    "A": "Free model",
+                    "B": "Business model offering basic service free, premium features paid",
+                    "C": "Free model",
+                    "D": "Premium model"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 273,
+                "question": "What is platform business model?",
+                "options": {
+                    "A": "Platform model",
+                    "B": "Business model connecting different user groups",
+                    "C": "Platform model",
+                    "D": "Connection model"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 274,
+                "question": "What is marketplace business model?",
+                "options": {
+                    "A": "Marketplace model",
+                    "B": "Platform connecting buyers and sellers",
+                    "C": "Marketplace model",
+                    "D": "Trading platform"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 275,
+                "question": "What is sharing economy?",
+                "options": {
+                    "A": "Shared economy",
+                    "B": "Economic model based on sharing resources",
+                    "C": "Shared economy",
+                    "D": "Resource sharing"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 276,
+                "question": "What is gig economy?",
+                "options": {
+                    "A": "Gig work",
+                    "B": "Labor market characterized by short-term contracts",
+                    "C": "Gig work",
+                    "D": "Short-term work"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 277,
+                "question": "What is circular economy?",
+                "options": {
+                    "A": "Circular model",
+                    "B": "Economic system focused on resource efficiency and sustainability",
+                    "C": "Circular model",
+                    "D": "Sustainable economy"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 278,
+                "question": "What is sustainable business?",
+                "options": {
+                    "A": "Sustainable company",
+                    "B": "Business that considers environmental and social impact",
+                    "C": "Sustainable company",
+                    "D": "Green business"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 279,
+                "question": "What is corporate social responsibility (CSR)?",
+                "options": {
+                    "A": "Social responsibility",
+                    "B": "Company's commitment to social and environmental well-being",
+                    "C": "Social responsibility",
+                    "D": "Corporate responsibility"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 280,
+                "question": "What is triple bottom line?",
+                "options": {
+                    "A": "Three bottom lines",
+                    "B": "Measuring success by profit, people, and planet",
+                    "C": "Three bottom lines",
+                    "D": "Triple measurement"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 281,
+                "question": "What is impact investing?",
+                "options": {
+                    "A": "Impact investment",
+                    "B": "Investing for both financial return and social impact",
+                    "C": "Impact investment",
+                    "D": "Social investment"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 282,
+                "question": "What is social entrepreneurship?",
+                "options": {
+                    "A": "Social business",
+                    "B": "Entrepreneurship focused on solving social problems",
+                    "C": "Social business",
+                    "D": "Social enterprise"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 283,
+                "question": "What is a social enterprise?",
+                "options": {
+                    "A": "Social company",
+                    "B": "Business that addresses social issues while making profit",
+                    "C": "Social company",
+                    "D": "Social business"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 284,
+                "question": "What is B Corporation?",
+                "options": {
+                    "A": "B Corp",
+                    "B": "Certification for businesses meeting social and environmental standards",
+                    "C": "B Corp",
+                    "D": "Social certification"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 285,
+                "question": "What is fair trade?",
+                "options": {
+                    "A": "Fair trading",
+                    "B": "Trading partnership based on dialogue, transparency, and respect",
+                    "C": "Fair trading",
+                    "D": "Ethical trade"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 286,
+                "question": "What is green business?",
+                "options": {
+                    "A": "Green company",
+                    "B": "Business that operates in environmentally friendly ways",
+                    "C": "Green company",
+                    "D": "Environmental business"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 287,
+                "question": "What is carbon footprint?",
+                "options": {
+                    "A": "Carbon impact",
+                    "B": "Total greenhouse gas emissions caused by an organization",
+                    "C": "Carbon impact",
+                    "D": "Environmental impact"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 288,
+                "question": "What is carbon offsetting?",
+                "options": {
+                    "A": "Carbon compensation",
+                    "B": "Compensating for carbon emissions through environmental projects",
+                    "C": "Carbon compensation",
+                    "D": "Emission offsetting"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 289,
+                "question": "What is renewable energy?",
+                "options": {
+                    "A": "Renewable power",
+                    "B": "Energy from sources that are naturally replenished",
+                    "C": "Renewable power",
+                    "D": "Sustainable energy"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 290,
+                "question": "What is energy efficiency?",
+                "options": {
+                    "A": "Energy saving",
+                    "B": "Using less energy to perform the same function",
+                    "C": "Energy saving",
+                    "D": "Efficient energy use"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 291,
+                "question": "What is waste reduction?",
+                "options": {
+                    "A": "Waste decrease",
+                    "B": "Minimizing waste generation in business operations",
+                    "C": "Waste decrease",
+                    "D": "Waste minimization"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 292,
+                "question": "What is recycling?",
+                "options": {
+                    "A": "Reusing materials",
+                    "B": "Converting waste materials into new products",
+                    "C": "Reusing materials",
+                    "D": "Material conversion"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 293,
+                "question": "What is upcycling?",
+                "options": {
+                    "A": "Upgrade cycling",
+                    "B": "Converting waste materials into products of higher value",
+                    "C": "Upgrade cycling",
+                    "D": "Value conversion"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 294,
+                "question": "What is biodegradable?",
+                "options": {
+                    "A": "Natural breakdown",
+                    "B": "Capable of being broken down by natural processes",
+                    "C": "Natural breakdown",
+                    "D": "Natural decomposition"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 295,
+                "question": "What is organic certification?",
+                "options": {
+                    "A": "Organic approval",
+                    "B": "Certification that products meet organic standards",
+                    "C": "Organic approval",
+                    "D": "Organic verification"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 296,
+                "question": "What is local sourcing?",
+                "options": {
+                    "A": "Local supply",
+                    "B": "Obtaining materials and products from nearby sources",
+                    "C": "Local supply",
+                    "D": "Local procurement"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 297,
+                "question": "What is ethical sourcing?",
+                "options": {
+                    "A": "Ethical supply",
+                    "B": "Obtaining materials in socially and environmentally responsible ways",
+                    "C": "Ethical supply",
+                    "D": "Responsible sourcing"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 298,
+                "question": "What is supply chain transparency?",
+                "options": {
+                    "A": "Supply visibility",
+                    "B": "Openness about supply chain practices and sources",
+                    "C": "Supply visibility",
+                    "D": "Supply openness"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 299,
+                "question": "What is traceability?",
+                "options": {
+                    "A": "Tracking ability",
+                    "B": "Ability to track products through the supply chain",
+                    "C": "Tracking ability",
+                    "D": "Product tracking"
+                },
+                "answer": "B"
+            },
+            {
+                "number": 300,
+                "question": "What is blockchain in business?",
+                "options": {
+                    "A": "Blockchain technology",
+                    "B": "Distributed ledger technology for secure, transparent transactions",
+                    "C": "Blockchain technology",
+                    "D": "Digital ledger"
+                },
+                "answer": "B"
+            }
+        ];
     }
 }
 
-// Initialize the app when the page loads
+// Initialize the quiz when the page loads
 document.addEventListener('DOMContentLoaded', () => {
-    new QuizApp();
-}); 
+    new EntrepreneurshipQuiz();
+});
+
+// Add slideInRight animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+`;
+document.head.appendChild(style); 

@@ -3,144 +3,320 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Security Architecture Quiz</title>
+    <title>Entrepreneurship Quiz - Sectioned</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-content">
-                <div class="logo">
-                    <i class="fas fa-shield-alt"></i>
-                    <h1>Security Architecture Quiz</h1>
-                </div>
-                <div class="header-stats">
-                    <div class="stat">
-                        <span class="stat-label">Progress</span>
-                        <span class="stat-value" id="progress">0%</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-label">Score</span>
-                        <span class="stat-value" id="score">0</span>
-                    </div>
-                </div>
-            </div>
-        </header>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2>Loading Quiz...</h2>
+            <p>Preparing your entrepreneurship knowledge test</p>
+        </div>
+    </div>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Welcome Screen -->
-            <div id="welcome-screen" class="screen active">
-                <div class="welcome-content">
-                    <div class="welcome-icon">
-                        <i class="fas fa-graduation-cap"></i>
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="screen active">
+        <div class="container">
+            <div class="welcome-content">
+                <div class="logo">
+                    <i class="fas fa-rocket"></i>
+                    <h1>Entrepreneurship Quiz</h1>
+                </div>
+                <p class="subtitle">Test your knowledge with 300 colorful MCQs</p>
+                <div class="stats">
+                    <div class="stat-item vibrant">
+                        <i class="fas fa-question-circle"></i>
+                        <span>300 Questions</span>
                     </div>
-                    <h2>Welcome to Security Architecture Quiz</h2>
-                    <p>Test your knowledge of security architecture through real-world case studies</p>
-                    
-                    <div class="case-studies-grid" id="case-studies-container">
-                        <!-- Case studies will be populated here -->
+                    <div class="stat-item vibrant">
+                        <i class="fas fa-layer-group"></i>
+                        <span>3 Sections</span>
                     </div>
-                    
-                    <button class="btn-primary" id="start-quiz-btn">
+                    <div class="stat-item vibrant">
+                        <i class="fas fa-trophy"></i>
+                        <span>Track Progress</span>
+                    </div>
+                </div>
+                <div class="quiz-options">
+                    <button id="start-section-select" class="btn btn-primary animated">
                         <i class="fas fa-play"></i>
                         Start Quiz
                     </button>
+                    <button id="view-instructions" class="btn btn-secondary animated">
+                        <i class="fas fa-info-circle"></i>
+                        Instructions
+                    </button>
+                </div>
+                <div class="theme-toggle">
+                    <button id="theme-toggle" class="theme-btn">
+                        <i class="fas fa-moon"></i>
+                    </button>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- Quiz Screen -->
-            <div id="quiz-screen" class="screen">
-                <div class="quiz-container">
-                    <div class="quiz-header">
-                        <div class="quiz-info">
-                            <h3 id="current-topic">Topic</h3>
-                            <div class="progress-bar">
-                                <div class="progress-fill" id="question-progress"></div>
-                            </div>
-                            <span class="question-counter" id="question-counter">Question 1 of 5</span>
-                        </div>
+    <!-- Section Selection Screen -->
+    <div id="section-select-screen" class="screen">
+        <div class="container">
+            <div class="section-select-content">
+                <h2><i class="fas fa-layer-group"></i> Select Quiz Section</h2>
+                <div class="section-cards">
+                    <div class="section-card enabled animated" data-section="1">
+                        <div class="section-badge">Section 1</div>
+                        <div class="section-range">MCQs 1 - 100</div>
+                        <div class="section-desc">Start with the first 100 questions</div>
+                        <button class="btn btn-success start-section-btn">Start Section 1</button>
                     </div>
-
-                    <div class="question-container">
-                        <div class="question-card">
-                            <h4 id="question-text">Question text will appear here</h4>
-                            <div class="options-container" id="options-container">
-                                <!-- Options will be populated here -->
-                            </div>
-                        </div>
+                    <div class="section-card enabled animated" data-section="2">
+                        <div class="section-badge">Section 2</div>
+                        <div class="section-range">MCQs 101 - 200</div>
+                        <div class="section-desc">Continue with the next 100 questions</div>
+                        <button class="btn btn-success start-section-btn">Start Section 2</button>
                     </div>
+                    <div class="section-card enabled animated" data-section="3">
+                        <div class="section-badge">Section 3</div>
+                        <div class="section-range">MCQs 201 - 300</div>
+                        <div class="section-desc">Complete the final 100 questions</div>
+                        <button class="btn btn-success start-section-btn">Start Section 3</button>
+                    </div>
+                </div>
+                <button id="back-to-welcome-section" class="btn btn-outline">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Home
+                </button>
+            </div>
+        </div>
+    </div>
 
-                    <div class="quiz-controls">
-                        <button class="btn-secondary" id="prev-btn">
-                            <i class="fas fa-arrow-left"></i>
-                            Previous
-                        </button>
-                        <button class="btn-primary" id="next-btn">
-                            Next
-                            <i class="fas fa-arrow-right"></i>
-                        </button>
+    <!-- Instructions Screen -->
+    <div id="instructions-screen" class="screen">
+        <div class="container">
+            <div class="instructions-content">
+                <h2><i class="fas fa-info-circle"></i> Quiz Instructions</h2>
+                <div class="instructions-list">
+                    <div class="instruction-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Answer 100 multiple choice questions per section</span>
+                    </div>
+                    <div class="instruction-item">
+                        <i class="fas fa-layer-group"></i>
+                        <span>3 colorful sections for better focus</span>
+                    </div>
+                    <div class="instruction-item">
+                        <i class="fas fa-undo"></i>
+                        <span>You can review and change answers</span>
+                    </div>
+                    <div class="instruction-item">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Track your progress and score</span>
+                    </div>
+                    <div class="instruction-item">
+                        <i class="fas fa-bookmark"></i>
+                        <span>Bookmark questions for later review</span>
+                    </div>
+                </div>
+                <button id="back-to-welcome" class="btn btn-primary">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Start
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="quiz-screen" class="screen">
+        <div class="container">
+            <!-- Header -->
+            <div class="quiz-header vibrant-bg">
+                <div class="quiz-info">
+                    <h2>Section <span id="section-number">1</span> &mdash; Question <span id="current-question">1</span> of <span id="total-questions">100</span></h2>
+                    <div class="progress-container">
+                        <div class="progress-bar vibrant-bar">
+                            <div id="progress-fill" class="progress-fill"></div>
+                        </div>
+                        <span id="progress-text">0%</span>
+                    </div>
+                </div>
+                <div class="quiz-controls">
+                    <div class="timer-container">
+                        <i class="fas fa-clock"></i>
+                        <span id="timer-display">100:00</span>
+                    </div>
+                    <button id="bookmark-btn" class="btn-icon" title="Bookmark Question">
+                        <i class="fas fa-bookmark"></i>
+                    </button>
+                    <button id="theme-toggle-quiz" class="btn-icon" title="Toggle Theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- Question Content -->
+            <div class="question-container vibrant-shadow">
+                <div class="question-content">
+                    <h3 id="question-text">Loading question...</h3>
+                    <div class="options-container">
+                        <div class="option" data-option="A">
+                            <span class="option-label">A</span>
+                            <span class="option-text" id="option-a">Loading...</span>
+                        </div>
+                        <div class="option" data-option="B">
+                            <span class="option-label">B</span>
+                            <span class="option-text" id="option-b">Loading...</span>
+                        </div>
+                        <div class="option" data-option="C">
+                            <span class="option-label">C</span>
+                            <span class="option-text" id="option-c">Loading...</span>
+                        </div>
+                        <div class="option" data-option="D">
+                            <span class="option-label">D</span>
+                            <span class="option-text" id="option-d">Loading...</span>
+                        </div>
                     </div>
                 </div>
             </div>
+            <!-- Navigation -->
+            <div class="quiz-navigation">
+                <button id="prev-btn" class="btn btn-secondary" disabled>
+                    <i class="fas fa-chevron-left"></i>
+                    Previous
+                </button>
+                <div class="nav-center">
+                    <button id="review-btn" class="btn btn-outline">
+                        <i class="fas fa-eye"></i>
+                        Review
+                    </button>
+                    <button id="finish-btn" class="btn btn-success">
+                        <i class="fas fa-flag-checkered"></i>
+                        Finish Quiz
+                    </button>
+                </div>
+                <button id="next-btn" class="btn btn-primary">
+                    Next
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
 
-            <!-- Results Screen -->
-            <div id="results-screen" class="screen">
-                <div class="results-content">
-                    <div class="results-header">
-                        <div class="results-icon">
-                            <i class="fas fa-trophy"></i>
-                        </div>
-                        <h2>Quiz Complete!</h2>
-                        <p>Here's how you performed</p>
+    <!-- Review Screen -->
+    <div id="review-screen" class="screen">
+        <div class="container">
+            <div class="review-content">
+                <div class="review-header">
+                    <h2><i class="fas fa-eye"></i> Quiz Review</h2>
+                    <p>Review your answers before finishing</p>
+                </div>
+                
+                <div class="review-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-check-circle"></i>
+                        <span id="answered-count">0</span>
+                        <label>Answered</label>
                     </div>
-
-                    <div class="results-stats">
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-check-circle"></i>
-                            </div>
-                            <div class="stat-info">
-                                <span class="stat-value" id="correct-answers">0</span>
-                                <span class="stat-label">Correct</span>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-times-circle"></i>
-                            </div>
-                            <div class="stat-info">
-                                <span class="stat-value" id="incorrect-answers">0</span>
-                                <span class="stat-label">Incorrect</span>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-percentage"></i>
-                            </div>
-                            <div class="stat-info">
-                                <span class="stat-value" id="accuracy">0%</span>
-                                <span class="stat-label">Accuracy</span>
-                            </div>
-                        </div>
+                    <div class="stat-card">
+                        <i class="fas fa-question-circle"></i>
+                        <span id="unanswered-count">0</span>
+                        <label>Unanswered</label>
                     </div>
-
-                    <div class="results-actions">
-                        <button class="btn-primary" id="retry-btn">
-                            <i class="fas fa-redo"></i>
-                            Try Again
-                        </button>
-                        <button class="btn-secondary" id="home-btn">
-                            <i class="fas fa-home"></i>
-                            Back to Home
-                        </button>
+                    <div class="stat-card">
+                        <i class="fas fa-bookmark"></i>
+                        <span id="bookmarked-count">0</span>
+                        <label>Bookmarked</label>
                     </div>
                 </div>
+
+                <div class="review-actions">
+                    <button id="back-to-quiz" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Quiz
+                    </button>
+                    <button id="submit-quiz" class="btn btn-success">
+                        <i class="fas fa-paper-plane"></i>
+                        Submit Quiz
+                    </button>
+                </div>
             </div>
-        </main>
+        </div>
+    </div>
+
+    <!-- Results Screen -->
+    <div id="results-screen" class="screen">
+        <div class="container">
+            <div class="results-content">
+                <div class="results-header">
+                    <h2><i class="fas fa-trophy"></i> Quiz Results</h2>
+                    <div class="score-display">
+                        <div class="score-circle">
+                            <span id="score-percentage">0%</span>
+                        </div>
+                        <div class="score-details">
+                            <h3 id="score-text">Great Job!</h3>
+                            <p id="score-description">You answered <span id="correct-answers">0</span> out of <span id="total-answered">0</span> questions correctly.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-check"></i>
+                        <span>Correct: <span id="correct-count">0</span></span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-times"></i>
+                        <span>Incorrect: <span id="incorrect-count">0</span></span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Time: <span id="quiz-time">00:00</span></span>
+                    </div>
+                </div>
+
+                <div class="results-actions">
+                    <button id="review-answers" class="btn btn-primary">
+                        <i class="fas fa-eye"></i>
+                        Review Answers
+                    </button>
+                    <button id="restart-quiz" class="btn btn-secondary">
+                        <i class="fas fa-redo"></i>
+                        Restart Quiz
+                    </button>
+                    <button id="back-to-home" class="btn btn-outline">
+                        <i class="fas fa-home"></i>
+                        Back to Home
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Answer Review Screen -->
+    <div id="answer-review-screen" class="screen">
+        <div class="container">
+            <div class="review-content">
+                <div class="review-header">
+                    <h2><i class="fas fa-list"></i> Answer Review</h2>
+                    <button id="close-review" class="btn-icon">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="review-filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="correct">Correct</button>
+                    <button class="filter-btn" data-filter="incorrect">Incorrect</button>
+                    <button class="filter-btn" data-filter="bookmarked">Bookmarked</button>
+                </div>
+
+                <div id="review-list" class="review-list">
+                    <!-- Review items will be populated here -->
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
